@@ -1,24 +1,38 @@
 package productos;
 
 import java.io.Serializable;
-import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
-public class Producto implements Serializable,Comparable {
+public class Producto implements Serializable {
     private String nombre;
     private int precioCentimos;
     private String uriImagen;
-    private CategoriaProducto categoria;
+    private Set<CategoriaProducto> categorias;
 
     public Producto(String nombre, int precioCentimos, String uriImagen, CategoriaProducto categoria) {
         this.nombre = nombre;
         this.precioCentimos = precioCentimos;
         this.uriImagen = uriImagen;
-        this.categoria = categoria;
+        this.categorias = new HashSet<>();
+        categorias.add(categoria);
+    }
+
+    public Producto(String nombre, int precioCentimos, String uriImagen, Set<CategoriaProducto> categorias) {
+        this.nombre = nombre;
+        this.precioCentimos = precioCentimos;
+        this.uriImagen = uriImagen;
+        this.categorias = new HashSet<>(categorias);
     }
 
     public Producto(String nombre, int precioCentimos, String uriImagen) {
         this(nombre,precioCentimos,uriImagen,CategoriaProducto.OTROS);
+    }
+
+    public Producto anyadeCategoria(CategoriaProducto categoria){
+        categorias.add(categoria);
+        return this;
     }
 
     public String getNombre() {
@@ -37,8 +51,8 @@ public class Producto implements Serializable,Comparable {
         return uriImagen;
     }
 
-    public CategoriaProducto getCategoria() {
-        return categoria;
+    public HashSet<CategoriaProducto> getCategoria() {
+        return new HashSet<>(categorias);
     }
 
     @Override
@@ -52,11 +66,5 @@ public class Producto implements Serializable,Comparable {
     @Override
     public int hashCode() {
         return Objects.hash(nombre);
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        Producto otro = (Producto) o;
-        return this.getCategoria().compareTo(((Producto) o).getCategoria());
     }
 }

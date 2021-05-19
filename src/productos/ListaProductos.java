@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.*;
 
 public class ListaProductos implements Serializable {
-    private final List<Producto> productos;
+    private final Set<Producto> productos;
 
     public ListaProductos() {
-        this.productos = new ArrayList<>();
+        this.productos = new HashSet<>();
     }
 
     public ListaProductos anyadeProducto(Producto producto){
@@ -15,7 +15,7 @@ public class ListaProductos implements Serializable {
         return this;
     }
 
-    public ArrayList<Producto> getProductos() {
-        return new ArrayList<>(productos);
+    public Set<Producto> getProductos() {
+        return new HashSet<>(productos);
     }
 }

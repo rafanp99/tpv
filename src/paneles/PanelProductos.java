@@ -4,40 +4,27 @@ import productos.ListaProductos;
 import productos.Producto;
 
 import javax.swing.*;
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PanelProductos {
-    private final JPanel panel = new JPanel();
-    private final List<Producto> listaProductos;
+    private final JPanel panel;
+    private final Set<Producto> listaProductos;
 
     public PanelProductos(ListaProductos listaProductos) {
+        this.panel = new JPanel(new GridLayout(0,5));
         this.listaProductos = listaProductos.getProductos();
+        anyadeBotonesProductos();
     }
 
-    public List<Producto> getListaProductos() {
-        return new ArrayList<>(listaProductos);
+    private void anyadeBotonesProductos() {
+        for (Producto producto:listaProductos) {
+        }
     }
 
-    public static void main(String[] args) {
-        ListaProductos listaProductos = null;
-        try(ObjectInputStream ois=new ObjectInputStream(new FileInputStream(new File("ListaProductos.obj")))){
-            while(true) {
-                listaProductos=(ListaProductos) ois.readObject();
-            }
-        }  catch (EOFException eof){
-            System.out.println("Termino de leer");
-        }
-        catch (IOException ioe){
-            ioe.printStackTrace();
-        } catch (ClassNotFoundException cnfe){
-            System.out.println("No hay coches en el fichero");
-            cnfe.printStackTrace();
-        }
-        for (Producto p:listaProductos.getProductos()
-             ) {
-            System.out.println(p.getNombre());
-        }
+    public HashSet<Producto> getListaProductos() {
+        return new HashSet<>(listaProductos);
     }
+
 }
