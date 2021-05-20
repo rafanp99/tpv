@@ -1,11 +1,16 @@
 package productos;
 
+import logger.LogFactory;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.logging.Logger;
+
 
 public class Producto implements Serializable {
+    private static final Logger LOGGER = LogFactory.getLogger(Producto.class.getName());
     private String nombre;
     private int precioCentimos;
     private String uriImagen;
@@ -51,7 +56,7 @@ public class Producto implements Serializable {
         return uriImagen;
     }
 
-    public HashSet<CategoriaProducto> getCategoria() {
+    public HashSet<CategoriaProducto> getCategorias() {
         return new HashSet<>(categorias);
     }
 
