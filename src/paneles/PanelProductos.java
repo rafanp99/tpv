@@ -36,7 +36,9 @@ public class PanelProductos {
                 BotonProducto botonProducto = new BotonProducto(producto);
                 panelPestanya.add(botonProducto.getBoton());
             }
+            pestanyas.addTab(entrada.getKey().getNombre(),null,panelPestanya);
         }
+        panel.add(pestanyas);
     }
 
     private void rellenaProductosPorCategorias(HashSet<Producto> productos) {

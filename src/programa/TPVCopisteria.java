@@ -29,11 +29,12 @@ public class TPVCopisteria {
 
         JFrame frame = new JFrame();
         JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new GridBagLayout());
+        panelPrincipal.setLayout(new GridLayout(0,1));
         GridBagConstraints gridBagC = new GridBagConstraints();
         gridBagC.gridx=0;
         gridBagC.gridy=0;
         panelPrincipal.add(panelProductos.getPanel());
+        frame.add(panelPrincipal);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
