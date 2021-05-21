@@ -31,9 +31,9 @@ public class PanelProductos {
     private void creaPestanyas() {
         for (Map.Entry<CategoriaProducto,HashSet<Producto>> entrada: produtosPorCategoria.entrySet()) {
             HashSet<Producto> productosDeCategoria = entrada.getValue();
-            JPanel panelPestanya = new JPanel(new GridLayout(0,5));
+            JPanel panelPestanya = new JPanel(new GridLayout(0,6));
             for (Producto producto:productosDeCategoria) {
-                BotonProducto botonProducto = new BotonProducto(producto);
+                BotonProducto botonProducto = new BotonProducto(producto,this);
                 panelPestanya.add(botonProducto.getBoton());
             }
             pestanyas.addTab(entrada.getKey().getNombre(),null,panelPestanya);

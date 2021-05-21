@@ -1,9 +1,10 @@
 package programa;
 
 import logger.LogFactory;
+import paneles.PanelLateral;
 import paneles.PanelProductos;
+import paneles.PanelSuperiorFechaHora;
 import productos.CategoriaProducto;
-import productos.ListaProductos;
 import productos.Producto;
 
 import javax.swing.*;
@@ -33,9 +34,22 @@ public class TPVCopisteria {
         GridBagConstraints gridBagC = new GridBagConstraints();
         gridBagC.gridx=0;
         gridBagC.gridy=0;
-        panelPrincipal.add(panelProductos.getPanel());
+        gridBagC.gridwidth=2;
+        PanelSuperiorFechaHora panelSuperiorFechaHora = new PanelSuperiorFechaHora();
+        panelPrincipal.add(panelSuperiorFechaHora.getPanel(),gridBagC);
+        gridBagC.gridwidth=1;
+        gridBagC.gridy=1;
+        gridBagC.gridx=0;
+        panelPrincipal.add(panelProductos.getPanel(),gridBagC);
+        gridBagC.gridwidth=1;
+        gridBagC.gridx=1;
+        gridBagC.gridy=1;
+        PanelLateral panelLateral = new PanelLateral();
+        panelPrincipal.add(panelLateral.getPanel(),gridBagC);
         frame.add(panelPrincipal);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        frame.setUndecorated(true);
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }

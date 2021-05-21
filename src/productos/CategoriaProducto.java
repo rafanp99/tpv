@@ -42,5 +42,4 @@ public enum CategoriaProducto implements Serializable {
     public String toString() {
         return nombre;
     }
-
 }

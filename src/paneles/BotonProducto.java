@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.util.logging.Logger;
 
 public class BotonProducto {
+    private final PanelProductos panelProductos;
     private static final Logger LOGGER = LogFactory.getLogger(BotonProducto.class.getName());
     private final JButton boton;
     private Producto producto;
@@ -15,8 +16,9 @@ public class BotonProducto {
         return boton;
     }
 
-    public BotonProducto(Producto producto) {
+    public BotonProducto(Producto producto,PanelProductos panelProductos) {
         this.producto = producto;
+        this.panelProductos = panelProductos;
         this.boton = new JButton(producto.getNombre());
         disenyaBoton();
     }

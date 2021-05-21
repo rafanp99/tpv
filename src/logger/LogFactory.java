@@ -31,7 +31,7 @@ public final class LogFactory {
 
 		Handler fileTxt = null;
 		try {
-			fileTxt = new FileHandler("logging.txt");
+			fileTxt = new FileHandler("logging.txt",true);
 			
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileTxt.setFormatter(simpleFormatter);
