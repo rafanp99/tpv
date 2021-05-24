@@ -62,7 +62,7 @@ public class TPVCopisteria {
         frame.add(panelPrincipal);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(false);
+        frame.setUndecorated(true);
         frame.pack();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);

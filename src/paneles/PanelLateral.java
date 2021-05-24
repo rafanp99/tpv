@@ -34,5 +34,6 @@ public class PanelLateral {
         this.panelAnyadeProducto = new PanelAnyadeProducto(this);
         this.panel.add(panelAnyadeProducto.getPanel());
         this.panelListaCompra = new PanelListaCompra(this);
+        this.panel.add(panelListaCompra.getPanel());
     }
 }

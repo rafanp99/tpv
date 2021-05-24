@@ -20,6 +20,10 @@ public class PanelAnyadeProducto{
         return panel;
     }
 
+    public Producto getProducto() {
+        return producto;
+    }
+
     public PanelAnyadeProducto(PanelLateral panelLateral) {
         this.panelLateral = panelLateral;
         this.panel = new JPanel(new GridLayout(0,1));

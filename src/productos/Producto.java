@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 
-public class Producto implements Serializable,Comparable {
+public class Producto implements Serializable {
     private static final Logger LOGGER = LogFactory.getLogger(Producto.class.getName());
     private String nombre;
     private int precioCentimos;
@@ -65,19 +65,12 @@ public class Producto implements Serializable,Comparable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Producto producto = (Producto) o;
-        return nombre.equals(producto.nombre);
+        return precioCentimos == producto.precioCentimos &&
+                Objects.equals(nombre, producto.nombre);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nombre);
-    }
-
-    @Override
-    public int compareTo(Object o) {
-        if(o == null) return 1;
-        if(o.getClass() != this.getClass()) return 1;
-        Producto otro = (Producto) o;
-        return this.nombre.compareTo(otro.nombre);
+        return Objects.hash(nombre, precioCentimos);
     }
 }

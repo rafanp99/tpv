@@ -1,5 +1,6 @@
 package paneles;
 
+import utilidades.estilos.UtilidadesEstilos;
 import logger.LogFactory;
 
 import javax.swing.*;
@@ -32,18 +33,24 @@ public class PanelIntroduceNumero {
         this.panel = new JPanel(new GridLayout(1,6));
         this.cantidad = 1;
         this.botonMenos = new JButton("-");
+        UtilidadesEstilos.botonAzul(botonMenos);
         panel.add(botonMenos);
         this.campoCantidad = new JTextField("1");
         campoCantidad.setHorizontalAlignment(SwingConstants.CENTER);
+        campoCantidad.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,32));
         campoCantidad.setColumns(4);
         panel.add(campoCantidad);
         this.botonMas = new JButton("+");
+        UtilidadesEstilos.botonAzul(botonMas);
         panel.add(botonMas);
         this.x10 = new JButton("x10");
+        UtilidadesEstilos.botonAzul(x10);
         panel.add(x10);
         this.x100 = new JButton("x100");
+        UtilidadesEstilos.botonAzul(x100);
         panel.add(x100);
         this.aceptar = new JButton("✓");
+        UtilidadesEstilos.botonAzul(aceptar);
         panel.add(aceptar);
         anyadeListeners();
     }
@@ -73,8 +80,9 @@ public class PanelIntroduceNumero {
         });
         aceptar.addActionListener(e->{
             checkNumeroField();
-            //TODO check si hay Producto
-            panelAnyadeProducto.aceptar();
+            if(panelAnyadeProducto.getProducto()!=null){
+                panelAnyadeProducto.aceptar();
+            }
         });
     }
 
