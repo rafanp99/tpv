@@ -7,9 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.logging.Logger;
 
-public class PanelAnyadeProducto implements Introducible {
+public class PanelAnyadeProducto{
     private static final Logger LOGGER = LogFactory.getLogger(PanelAnyadeProducto.class.getName());
     private final JPanel panel;
+    private final PanelLateral panelLateral;
     private final JLabel labelProducto;
     private Producto producto;
     private int cantidad;
@@ -19,16 +20,20 @@ public class PanelAnyadeProducto implements Introducible {
         return panel;
     }
 
-    public PanelAnyadeProducto() {
+    public PanelAnyadeProducto(PanelLateral panelLateral) {
+        this.panelLateral = panelLateral;
         this.panel = new JPanel(new GridLayout(0,1));
-        this.panelIntroduceNumero = new PanelIntroduceNumero();
+        this.panelIntroduceNumero = new PanelIntroduceNumero(this);
         this.producto = null;
-        this.cantidad = 1;
         labelProducto = new JLabel("No hay ningun producto seleccionado");
         labelProducto.setForeground(Color.BLUE);
         panel.add(labelProducto);
         panel.add(panelIntroduceNumero.getPanel());
     }
+    public void reiniciaCantidad(){
+        panelIntroduceNumero.reinicia();
+    }
+
     public void cambiaProducto(Producto producto){
         this.producto = producto;
         cambiaTextoProducto(producto.getNombre());
@@ -38,16 +43,10 @@ public class PanelAnyadeProducto implements Introducible {
     }
 
 
-    @Override
-    public boolean introduceValor(String texto) {
-        try {
-            int nuevaCantidad = Integer.parseInt(texto);
-            this.cantidad = nuevaCantidad;
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            LOGGER.warning("Se ha intentado introducir un valor que no es un numero entero: "+texto);
-            return false;
-        }
-        return true;
+    public void aceptar() {
+        panelLateral.anyadeProductoALista(producto,panelIntroduceNumero.getCantidad());
+        this.producto = null;
+        labelProducto.setText("No hay ningun producto seleccionado");
+        panelIntroduceNumero.reinicia();
     }
 }

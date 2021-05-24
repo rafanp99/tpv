@@ -19,42 +19,56 @@ import java.util.logging.Logger;
 
 public class TPVCopisteria {
     private static final Logger LOGGER = LogFactory.getLogger(TPVCopisteria.class.getName());
-    public static void main(String[] args) throws IOException{
-        PanelProductos panelProductos = null;
+    private final PanelSuperiorFechaHora panelSuperiorFechaHora;
+    private final PanelProductos panelProductos;
+    private final PanelLateral panelLateral;
+
+    public JPanel getPanelSuperiorFechaHora() {
+        return panelSuperiorFechaHora.getPanel();
+    }
+
+    public JPanel getPanelProductos() {
+        return panelProductos.getPanel();
+    }
+
+    public JPanel getPanelLateral() {
+        return panelLateral.getPanel();
+    }
+
+    public TPVCopisteria() throws IOException {
+        panelLateral = new PanelLateral(this);
         try {
-            panelProductos = new PanelProductos(leeProductos());
+            panelProductos = new PanelProductos(leeProductos(),panelLateral);
         } catch (IOException ioe){
             LOGGER.severe("No se ha podido leer el csv de productos");
             throw ioe;
         }
+        panelSuperiorFechaHora = new PanelSuperiorFechaHora();
+    }
+
+    public static void main(String[] args) throws IOException{
+        TPVCopisteria tpvCopisteria = new TPVCopisteria();
 
         JFrame frame = new JFrame();
         JPanel panelPrincipal = new JPanel();
         panelPrincipal.setLayout(new GridLayout(0,1));
-        GridBagConstraints gridBagC = new GridBagConstraints();
-        gridBagC.gridx=0;
-        gridBagC.gridy=0;
-        gridBagC.gridwidth=2;
+        /* Quito por ahora la parte del logo y hora por temas de diseño
         PanelSuperiorFechaHora panelSuperiorFechaHora = new PanelSuperiorFechaHora();
-        panelPrincipal.add(panelSuperiorFechaHora.getPanel(),gridBagC);
-        gridBagC.gridwidth=1;
-        gridBagC.gridy=1;
-        gridBagC.gridx=0;
-        panelPrincipal.add(panelProductos.getPanel(),gridBagC);
-        gridBagC.gridwidth=1;
-        gridBagC.gridx=1;
-        gridBagC.gridy=1;
-        PanelLateral panelLateral = new PanelLateral();
-        panelPrincipal.add(panelLateral.getPanel(),gridBagC);
+        panelPrincipal.add(panelSuperiorFechaHora.getPanel());*/
+        JPanel panelProductosYLateral = new JPanel(new GridLayout(1,2));
+        panelProductosYLateral.add(tpvCopisteria.getPanelProductos());
+        panelProductosYLateral.add(tpvCopisteria.getPanelLateral());
+        panelPrincipal.add(panelProductosYLateral);
         frame.add(panelPrincipal);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(true);
+        frame.setUndecorated(false);
+        frame.pack();
         frame.setVisible(true);
         frame.setLocationRelativeTo(null);
     }
 
-    private static HashSet<Producto> leeProductos() throws IOException {
+    private HashSet<Producto> leeProductos() throws IOException {
         Set<Producto> productos = new HashSet<>();
         List<String> lineasCsv = Files.readAllLines(Paths.get("productos.csv"));
         for (String linea:lineasCsv) {

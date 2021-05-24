@@ -15,12 +15,18 @@ public class PanelProductos {
     private final JPanel panel;
     public final TreeMap<CategoriaProducto,HashSet<Producto>> produtosPorCategoria;
     private final JTabbedPane pestanyas;
+    private final PanelLateral panelLateral;
+
+    public PanelLateral getPanelLateral(){
+        return panelLateral;
+    }
 
     public JPanel getPanel() {
         return panel;
     }
 
-    public PanelProductos(HashSet<Producto> productos) {
+    public PanelProductos(HashSet<Producto> productos, PanelLateral panelLateral) {
+        this.panelLateral = panelLateral;
         this.panel = new JPanel(new GridLayout(0,1));
         this.produtosPorCategoria = new TreeMap<>();
         this.pestanyas = new JTabbedPane();
@@ -69,9 +75,5 @@ public class PanelProductos {
             }
         }
     }*/
-
-    private void anyadeBotonesProductos() {
-        //TODO
-    }
 
 }

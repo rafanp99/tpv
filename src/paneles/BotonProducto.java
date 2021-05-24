@@ -20,6 +20,9 @@ public class BotonProducto {
         this.producto = producto;
         this.panelProductos = panelProductos;
         this.boton = new JButton(producto.getNombre());
+        this.boton.addActionListener(e->{
+            this.panelProductos.getPanelLateral().seleccionaProducto(producto);
+        });
         disenyaBoton();
     }
 
