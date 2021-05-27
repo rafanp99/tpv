@@ -82,6 +82,8 @@ public class PanelIntroduceNumero {
             checkNumeroField();
             if(panelAnyadeProducto.getProducto()!=null){
                 panelAnyadeProducto.aceptar();
+            }else{
+                JOptionPane.showMessageDialog(null,"No hay ningun producto seleccionado!");
             }
         });
     }

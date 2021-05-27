@@ -31,6 +31,8 @@ public class PanelAnyadeProducto{
         this.producto = null;
         labelProducto = new JLabel("No hay ningun producto seleccionado");
         labelProducto.setForeground(Color.BLUE);
+        labelProducto.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
+        labelProducto.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(labelProducto);
         panel.add(panelIntroduceNumero.getPanel());
     }
@@ -40,10 +42,10 @@ public class PanelAnyadeProducto{
 
     public void cambiaProducto(Producto producto){
         this.producto = producto;
-        cambiaTextoProducto(producto.getNombre());
+        cambiaTextoProducto(producto);
     }
-    private void cambiaTextoProducto(String nombreProducto) {
-        labelProducto.setText(nombreProducto);
+    private void cambiaTextoProducto(Producto producto) {
+        labelProducto.setText(producto.getNombre()+" - "+producto.getPrecioDecimal()+"€/unidad");
     }
 
 

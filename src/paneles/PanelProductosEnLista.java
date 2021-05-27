@@ -30,6 +30,8 @@ public class PanelProductosEnLista {
         UtilidadesEstilos.botonAzul(botonEliminar);
         this.labelNombre = new JLabel("");
         this.labelNombre.setForeground(Color.WHITE);
+        this.labelNombre.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelNombre.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,22));;
         actualizaLabelNombre();
         this.botonEliminar.addActionListener(e->{
             panelListaCompra.eliminaProducto(this);
@@ -39,7 +41,7 @@ public class PanelProductosEnLista {
     }
 
     private void actualizaLabelNombre() {
-        this.labelNombre.setText("x"+cantidad+" "+producto.getNombre());
+        this.labelNombre.setText("x"+cantidad+" "+producto.getNombre()+" | Subtotal: "+String.format("%.2f",(double) (producto.getPrecioCentimos()*cantidad) / 100));
     }
 
     @Override

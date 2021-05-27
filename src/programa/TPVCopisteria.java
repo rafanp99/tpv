@@ -46,8 +46,17 @@ public class TPVCopisteria {
         panelSuperiorFechaHora = new PanelSuperiorFechaHora();
     }
 
+    private static void intentaDisenyoBonito(){
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws IOException{
         TPVCopisteria tpvCopisteria = new TPVCopisteria();
+        intentaDisenyoBonito();
 
         JFrame frame = new JFrame();
         JPanel panelPrincipal = new JPanel();

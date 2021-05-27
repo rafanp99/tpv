@@ -17,7 +17,7 @@ public class PanelProductos {
     public final TreeMap<CategoriaProducto,HashSet<Producto>> produtosPorCategoria;
     private final JTabbedPane pestanyas;
     private final PanelLateral panelLateral;
-    private final int cantidadColumas = 6;
+    private final int cantidadColumas = 4;
 
     public PanelLateral getPanelLateral(){
         return panelLateral;
@@ -56,8 +56,8 @@ public class PanelProductos {
         panel.add(pestanyas);
     }
     private Vector2 calculaPosicionBoton(int posicion){
-        int fila = posicion/6;
-        int columna = posicion%6;
+        int fila = posicion/cantidadColumas;
+        int columna = posicion%cantidadColumas;
         return new Vector2(columna,fila);
     }
 

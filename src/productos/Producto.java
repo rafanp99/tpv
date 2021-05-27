@@ -48,8 +48,8 @@ public class Producto implements Serializable {
         return precioCentimos;
     }
 
-    public double getPrecio(){
-        return (double) precioCentimos/100;
+    public String getPrecioDecimal(){
+        return String.format("%.2f",(double) precioCentimos/100);
     }
 
     public String getUriImagen() {
