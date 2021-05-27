@@ -9,7 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class PanelProductos {
@@ -37,6 +39,12 @@ public class PanelProductos {
     }
 
     private void creaPestanyas() {
+        // TODO Revisar y limpiar este metodo
+        Set<Producto> todosLosProductos = new HashSet<>();
+        JPanel pestanyaTodosProductos=new JPanel(new GridBagLayout());
+        int posicionTodos=0;
+        GridBagConstraints cTodos = new GridBagConstraints();
+        cTodos.fill = Box.Filler.HEIGHT;
         for (Map.Entry<CategoriaProducto,HashSet<Producto>> entrada: produtosPorCategoria.entrySet()) {
             HashSet<Producto> productosDeCategoria = entrada.getValue();
             JPanel panelPestanya = new JPanel(new GridBagLayout());
@@ -50,9 +58,19 @@ public class PanelProductos {
                 c.gridy=posicion.getY();
                 panelPestanya.add(botonProducto.getBoton(),c);
                 posicionActual++;
+                if(!todosLosProductos.contains(producto)){
+                    todosLosProductos.add(producto);
+                    BotonProducto botonProductoParaTodos = new BotonProducto(producto,this);
+                    Vector2 posicionParaTodos = calculaPosicionBoton(posicionTodos);
+                    posicionTodos++;
+                    cTodos.gridx=posicionParaTodos.getX();
+                    cTodos.gridy=posicionParaTodos.getY();
+                    pestanyaTodosProductos.add(botonProductoParaTodos.getBoton(),cTodos);
+                }
             }
             pestanyas.addTab(entrada.getKey().getNombre(),null,panelPestanya);
         }
+        pestanyas.addTab("TODOS",null,pestanyaTodosProductos);
         panel.add(pestanyas);
     }
     private Vector2 calculaPosicionBoton(int posicion){
@@ -79,6 +97,7 @@ public class PanelProductos {
         }
     }
 
+    // TODO Eliminar este comentario cuando finalice
     /*
     public static void main(String[] args) throws IOException {
         PanelProductos panelProductos = new PanelProductos(TPVCopisteria.leeProductos());
