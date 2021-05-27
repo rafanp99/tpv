@@ -70,7 +70,7 @@ public class TPVCopisteria {
 
     private HashSet<Producto> leeProductos() throws IOException {
         Set<Producto> productos = new HashSet<>();
-        List<String> lineasCsv = Files.readAllLines(Paths.get("productos.csv"));
+        List<String> lineasCsv = Files.readAllLines(Paths.get("resources/productos.csv"));
         for (String linea:lineasCsv) {
             String[] separadoPorComas = linea.split(",");
             String nombre = separadoPorComas[0];

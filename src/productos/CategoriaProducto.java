@@ -10,8 +10,8 @@ public enum CategoriaProducto implements Serializable {
     MAS_USADO("Más usados",(byte) 1),
     COPIAS("Copias"),
     FOTOGRAFIA("Fotografia"),
-    MARCOS("Marcos"),
     CAMISETAS("Camisetas"),
+    NEGOCIOS("Negocios"),
     OTROS("Otros");
 
     private final String nombre;
