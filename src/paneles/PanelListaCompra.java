@@ -55,6 +55,7 @@ public class PanelListaCompra {
         int existente = listaCompra.indexOf(producto);
         if(existente>=0){
             PanelProductosEnLista productosEnLista = listaCompra.get(existente);
+            panelLateral.getPanelBotonPagar().restaPrecio(productosEnLista.getProducto().getPrecioCentimos()*productosEnLista.getCantidad());
             panel.remove(productosEnLista.getPanel());
             listaCompra.remove(existente);
             panel.updateUI();

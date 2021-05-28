@@ -14,6 +14,7 @@ public class PanelLateral {
     private final PanelAnyadeProducto panelAnyadeProducto;
     private final PanelListaCompra panelListaCompra;
     private final TPVCopisteria programaPrincipal;
+    private final PanelBotonPagar panelBotonPagar;
 
     public void seleccionaProducto(Producto producto){
         panelAnyadeProducto.cambiaProducto(producto);
@@ -24,8 +25,13 @@ public class PanelLateral {
         return panel;
     }
 
+    public PanelBotonPagar getPanelBotonPagar() {
+        return panelBotonPagar;
+    }
+
     public void anyadeProductoALista(Producto producto, int cantidad){
         panelListaCompra.anyadeProducto(producto,cantidad);
+        panelBotonPagar.anyadePrecio(producto.getPrecioCentimos() * cantidad);
     }
 
     public PanelLateral(TPVCopisteria programaPrincipal){
@@ -35,5 +41,7 @@ public class PanelLateral {
         this.panel.add(panelAnyadeProducto.getPanel());
         this.panelListaCompra = new PanelListaCompra(this);
         this.panel.add(panelListaCompra.getPanel());
+        this.panelBotonPagar = new PanelBotonPagar(this);
+        this.panel.add(panelBotonPagar.getPanel());
     }
 }

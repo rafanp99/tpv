@@ -56,7 +56,7 @@ public class TPVCopisteria {
 
     public static void main(String[] args) throws IOException{
         TPVCopisteria tpvCopisteria = new TPVCopisteria();
-        intentaDisenyoBonito();
+        //intentaDisenyoBonito();
 
         JFrame frame = new JFrame();
         JPanel panelPrincipal = new JPanel();
