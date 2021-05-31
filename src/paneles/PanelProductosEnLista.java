@@ -24,30 +24,34 @@ public class PanelProductosEnLista {
         this.panelListaCompra = panelListaCompra;
         this.producto = producto;
         this.cantidad = cantidad;
-        this.panel = new JPanel(new GridBagLayout());
         this.botonEliminar = new JButton("X");
         botonEliminar.setHorizontalAlignment(SwingConstants.RIGHT);
-        UtilidadesEstilos.botonDanger(botonEliminar);
+        UtilidadesEstilos.botonCerrar(botonEliminar);
         this.labelNombre = new JLabel("");
-        this.labelNombre.setHorizontalAlignment(SwingConstants.CENTER);
+        this.labelNombre.setHorizontalAlignment(SwingConstants.LEFT);
+        this.labelNombre.setForeground(Color.BLACK);
         this.labelNombre.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,22));;
         actualizaLabelNombre();
         this.botonEliminar.addActionListener(e->{
             panelListaCompra.eliminaProducto(this);
         });
+        this.panel = new JPanel(new GridBagLayout());
+        this.panel.setBorder(BorderFactory.createEmptyBorder(7,7,7,7));
         this.constraints = new GridBagConstraints();
-        constraints.fill=GridBagConstraints.HORIZONTAL;
+        this.constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.gridx=0;
         constraints.gridy=0;
+        constraints.weightx=1;
         constraints.gridwidth=8;
         this.panel.add(labelNombre,constraints);
         constraints.gridx=8;
         constraints.gridwidth=4;
+        constraints.weightx=0;
         this.panel.add(botonEliminar,constraints);
     }
 
     private void actualizaLabelNombre() {
-        this.labelNombre.setText("x"+cantidad+" "+producto.getNombre()+" | Subtotal: "+String.format("%.2f",(double) (producto.getPrecioCentimos()*cantidad) / 100));
+        this.labelNombre.setText(producto.getNombre()+" "+producto.getPrecioDecimal()+"€ x "+cantidad+" | Subtotal: "+String.format("%.2f",(double) (producto.getPrecioCentimos()*cantidad) / 100)+"€");
     }
 
     @Override

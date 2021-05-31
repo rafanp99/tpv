@@ -30,7 +30,7 @@ public class PanelAnyadeProducto{
         this.panelIntroduceNumero = new PanelIntroduceNumero(this);
         this.producto = null;
         labelProducto = new JLabel("No hay ningun producto seleccionado");
-        labelProducto.setForeground(Color.BLUE);
+        labelProducto.setForeground(new Color(0,39,96));
         labelProducto.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
         labelProducto.setHorizontalAlignment(SwingConstants.CENTER);
         panel.add(labelProducto);

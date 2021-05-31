@@ -85,10 +85,8 @@ public class VentanaCobrar {
     }
 
     private void configuraBotonBorrar() {
-        UtilidadesEstilos.botonDanger(botonBorrar);
-        botonBorrar.addActionListener(e->{
-            reiniciaCobro();
-        });
+        UtilidadesEstilos.botonCerrar(botonBorrar);
+        botonBorrar.addActionListener(e-> reiniciaCobro());
     }
 
     private void actualizaLabels(){

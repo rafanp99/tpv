@@ -1,4 +1,4 @@
-package utilidades.estilos;
+package utilidades.matematicas;
 
 public class Vector2 {
     private int x;

@@ -64,7 +64,7 @@ public class TPVCopisteria {
         JPanel panelProductosYLateral = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.anchor=GridBagConstraints.NORTH;
-        constraints.fill=GridBagConstraints.CENTER;
+        constraints.fill=GridBagConstraints.HORIZONTAL;
         constraints.gridx=0;
         constraints.gridwidth=15;
         constraints.gridheight=20;
