@@ -65,6 +65,7 @@ public class TPVCopisteria {
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.anchor=GridBagConstraints.NORTH;
         constraints.fill=GridBagConstraints.HORIZONTAL;
+        constraints.weightx=1;
         constraints.gridx=0;
         constraints.gridwidth=15;
         constraints.gridheight=20;

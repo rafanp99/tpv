@@ -16,7 +16,7 @@ public class PanelProductos {
     public final TreeMap<CategoriaProducto,HashSet<Producto>> produtosPorCategoria;
     private final JTabbedPane pestanyas;
     private final PanelLateral panelLateral;
-    private final int cantidadColumas = 4;
+    private final int cantidadColumas = 6;
 
     public PanelLateral getPanelLateral(){
         return panelLateral;
@@ -39,13 +39,13 @@ public class PanelProductos {
     private void creaPestanyas() {
         // TODO Revisar y limpiar este metodo
         Set<Producto> todosLosProductos = new HashSet<>();
-        JPanel pestanyaTodosProductos=new JPanel(new GridLayout(5,5));
+        JPanel pestanyaTodosProductos=new JPanel(new GridLayout(5,cantidadColumas));
         int posicionTodos=0;
         GridBagConstraints cTodos = new GridBagConstraints();
         cTodos.fill = GridBagConstraints.HORIZONTAL;
         for (Map.Entry<CategoriaProducto,HashSet<Producto>> entrada: produtosPorCategoria.entrySet()) {
             HashSet<Producto> productosDeCategoria = entrada.getValue();
-            JPanel panelPestanya = new JPanel(new GridLayout(5,5));
+            JPanel panelPestanya = new JPanel(new GridLayout(5,cantidadColumas));
             int posicionActual = 0;
             for (Producto producto:productosDeCategoria) {
                 BotonProducto botonProducto = new BotonProducto(producto,this);
@@ -61,14 +61,14 @@ public class PanelProductos {
                     pestanyaTodosProductos.add(botonProductoParaTodos.getBoton(),cTodos);
                 }
             }
-            for (int i=(25-productosDeCategoria.size()); i>0; i--){
+            for (int i=(5*cantidadColumas-productosDeCategoria.size()); i>0; i--){
                 JButton boton = new JButton();
                 boton.setVisible(false);
                 panelPestanya.add(boton);
             }
             pestanyas.addTab(entrada.getKey().getNombre(),null,panelPestanya);
         }
-        for (int i=(25-todosLosProductos.size()); i>0; i--){
+        for (int i=(5*cantidadColumas-todosLosProductos.size()); i>0; i--){
             JButton boton = new JButton();
             boton.setVisible(false);
             pestanyaTodosProductos.add(boton);

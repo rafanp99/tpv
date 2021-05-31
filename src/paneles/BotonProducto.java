@@ -42,6 +42,7 @@ public class BotonProducto {
             UtilidadesEstilos.botonAzul(boton);
             LOGGER.warning("No se ha encontrado la imagen del producto "+producto.getNombre());
         }
+        boton.setBackground(new Color(241, 250, 238));
         boton.setBorder(BorderUIResource.getBlackLineBorderUIResource());
     }
 }

@@ -19,6 +19,7 @@ public class PanelIntroduceNumero {
     private final JButton botonMas;
     private final JButton x10;
     private final JButton x100;
+    private final JButton reiniciar;
     private final JButton aceptar;
 
     public int getCantidad() {
@@ -32,7 +33,7 @@ public class PanelIntroduceNumero {
 
     public PanelIntroduceNumero(PanelAnyadeProducto panelAnyadeProducto) {
         this.panelAnyadeProducto = panelAnyadeProducto;
-        this.panel = new JPanel(new GridLayout(1,6));
+        this.panel = new JPanel(new GridLayout(1,0));
         this.cantidad = 1;
         this.botonMenos = new JButton("-");
         UtilidadesEstilos.botonAzul(botonMenos);
@@ -52,6 +53,9 @@ public class PanelIntroduceNumero {
         this.x100 = new JButton("x100");
         UtilidadesEstilos.botonAzul(x100);
         panel.add(x100);
+        this.reiniciar = new JButton("↺");
+        UtilidadesEstilos.botonAzul(reiniciar);
+        panel.add(reiniciar);
         this.aceptar = new JButton("✓");
         UtilidadesEstilos.botonAzul(aceptar);
         panel.add(aceptar);
@@ -63,23 +67,27 @@ public class PanelIntroduceNumero {
             checkNumeroField();
             if(cantidad-1 > 0){
                 cantidad --;
-                campoCantidad.setText(""+cantidad);
+                actualizaField();
             }
         });
         botonMas.addActionListener(e->{
             checkNumeroField();
             cantidad ++;
-            campoCantidad.setText(""+cantidad);
+            actualizaField();
         });
         x10.addActionListener(e->{
             checkNumeroField();
             cantidad *= 10;
-            campoCantidad.setText(""+cantidad);
+            actualizaField();
         });
         x100.addActionListener(e->{
             checkNumeroField();
             cantidad *= 100;
-            campoCantidad.setText(""+cantidad);
+            actualizaField();
+        });
+        reiniciar.addActionListener(e->{
+            cantidad = 1;
+            actualizaField();
         });
         aceptar.addActionListener(e->{
             checkNumeroField();
@@ -89,6 +97,10 @@ public class PanelIntroduceNumero {
                 JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"No hay ningun producto seleccionado!");
             }
         });
+    }
+
+    private void actualizaField() {
+        campoCantidad.setText(""+cantidad);
     }
 
     public void reinicia(){
@@ -110,6 +122,6 @@ public class PanelIntroduceNumero {
             LOGGER.info("Se ha introducido un campo no numerico en el campo de cantidad: "+campoCantidad.getText());
         }
         cantidad = valorReal;
-        campoCantidad.setText(""+cantidad);
+        actualizaField();
     }
 }

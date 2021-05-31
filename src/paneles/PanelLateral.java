@@ -42,6 +42,7 @@ public class PanelLateral {
         this.panel = new JPanel(new GridBagLayout());
         constraint.fill=GridBagConstraints.HORIZONTAL;
         constraint.anchor=GridBagConstraints.NORTH;
+        constraint.weightx=1;
         constraint.gridx=0;
         constraint.gridy=0;
         this.panelAnyadeProducto = new PanelAnyadeProducto(this);
