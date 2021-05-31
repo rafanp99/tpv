@@ -1,9 +1,11 @@
 package paneles;
 
+import programa.TPVCopisteria;
 import utilidades.estilos.UtilidadesEstilos;
 import logger.LogFactory;
 
 import javax.swing.*;
+import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 import java.util.logging.Logger;
 
@@ -38,7 +40,8 @@ public class PanelIntroduceNumero {
         this.campoCantidad = new JTextField("1");
         campoCantidad.setHorizontalAlignment(SwingConstants.CENTER);
         campoCantidad.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,32));
-        campoCantidad.setColumns(4);
+        campoCantidad.setColumns(5);
+        campoCantidad.setBorder(BorderUIResource.getBlackLineBorderUIResource());
         panel.add(campoCantidad);
         this.botonMas = new JButton("+");
         UtilidadesEstilos.botonAzul(botonMas);
@@ -83,7 +86,7 @@ public class PanelIntroduceNumero {
             if(panelAnyadeProducto.getProducto()!=null){
                 panelAnyadeProducto.aceptar();
             }else{
-                JOptionPane.showMessageDialog(null,"No hay ningun producto seleccionado!");
+                JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"No hay ningun producto seleccionado!");
             }
         });
     }
@@ -98,6 +101,10 @@ public class PanelIntroduceNumero {
         try{
             int valorField = Integer.parseInt(campoCantidad.getText());
             valorReal = valorField;
+            if(valorReal<1){
+                JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"No puede haber un producto con cantidad negativa");
+                valorReal=1;
+            }
         } catch (NumberFormatException e) {
             e.printStackTrace();
             LOGGER.info("Se ha introducido un campo no numerico en el campo de cantidad: "+campoCantidad.getText());

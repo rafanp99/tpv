@@ -55,12 +55,10 @@ public class PanelListaCompra {
             panel.add(nuevo.getPanel(),constraints);
             cantidadProductos++;
         }
-        System.out.println(listaCompra);
         return this;
     }
 
     public boolean eliminaProducto(PanelProductosEnLista producto){
-        System.out.println(producto.getProducto().getNombre()+" "+producto.getProducto().getPrecioCentimos());
         int existente = listaCompra.indexOf(producto);
         if(existente>=0){
             PanelProductosEnLista productosEnLista = listaCompra.get(existente);

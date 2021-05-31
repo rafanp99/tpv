@@ -87,7 +87,6 @@ public class PanelProductos {
 
 
     private void rellenaProductosPorCategorias(HashSet<Producto> productos) {
-        System.out.println(productos.size());
         for (Producto producto:productos) {
             for (CategoriaProducto categoria:producto.getCategorias()) {
                 if(produtosPorCategoria.containsKey(categoria)){

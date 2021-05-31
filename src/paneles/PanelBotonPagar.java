@@ -29,6 +29,9 @@ public class PanelBotonPagar {
         this.panelLateral = panelLateral;
         this.precioTotalCentimos = 0;
         this.boton = new JButton();
+        this.boton.addActionListener(e->{
+            panelLateral.finalizaCompra();
+        });
         actualizaPrecio();
         UtilidadesEstilos.botonAzul(boton);
         this.panel = new JPanel(new GridLayout(0,1));

@@ -16,6 +16,7 @@ public class PanelLateral {
     private final TPVCopisteria programaPrincipal;
     private final PanelBotonPagar panelBotonPagar;
     private final GridBagConstraints constraint;
+    private final VentanaCobrar ventanaCobrar;
 
     public void seleccionaProducto(Producto producto){
         panelAnyadeProducto.cambiaProducto(producto);
@@ -53,5 +54,11 @@ public class PanelLateral {
         constraint.gridy=2;
         constraint.gridheight=10;
         this.panel.add(panelListaCompra.getPanel(),constraint);
+        this.ventanaCobrar = new VentanaCobrar(panelListaCompra);
+    }
+
+    public void finalizaCompra() {
+        ventanaCobrar.reiniciaCobro();
+        ventanaCobrar.abrir();
     }
 }

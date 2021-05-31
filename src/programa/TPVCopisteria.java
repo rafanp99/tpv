@@ -22,6 +22,7 @@ public class TPVCopisteria {
     private final PanelSuperiorFechaHora panelSuperiorFechaHora;
     private final PanelProductos panelProductos;
     private final PanelLateral panelLateral;
+    public static final JFrame FRAME = new JFrame();;
 
     public JPanel getPanelSuperiorFechaHora() {
         return panelSuperiorFechaHora.getPanel();
@@ -57,8 +58,6 @@ public class TPVCopisteria {
     public static void main(String[] args) throws IOException{
         TPVCopisteria tpvCopisteria = new TPVCopisteria();
         //intentaDisenyoBonito();
-
-        JFrame frame = new JFrame();
         /* Quito por ahora la parte del logo y hora por temas de diseño
         PanelSuperiorFechaHora panelSuperiorFechaHora = new PanelSuperiorFechaHora();
         panelPrincipal.add(panelSuperiorFechaHora.getPanel());*/
@@ -67,20 +66,20 @@ public class TPVCopisteria {
         constraints.anchor=GridBagConstraints.NORTH;
         constraints.fill=GridBagConstraints.CENTER;
         constraints.gridx=0;
-        constraints.gridwidth=10;
+        constraints.gridwidth=15;
         constraints.gridheight=20;
         constraints.gridy=0;
         panelProductosYLateral.add(tpvCopisteria.getPanelProductos(),constraints);
-        constraints.gridwidth=4;
-        constraints.gridx=10;
+        constraints.gridwidth=5;
+        constraints.gridx=15;
         panelProductosYLateral.add(tpvCopisteria.getPanelLateral(),constraints);
-        frame.add(panelProductosYLateral);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setUndecorated(true);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        tpvCopisteria.FRAME.add(panelProductosYLateral);
+        tpvCopisteria.FRAME.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        tpvCopisteria.FRAME.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        tpvCopisteria.FRAME.setUndecorated(true);
+        tpvCopisteria.FRAME.pack();
+        tpvCopisteria.FRAME.setVisible(true);
+        tpvCopisteria.FRAME.setLocationRelativeTo(null);
     }
 
     private HashSet<Producto> leeProductos() throws IOException {

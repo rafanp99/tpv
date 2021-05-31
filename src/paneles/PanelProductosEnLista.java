@@ -43,7 +43,6 @@ public class PanelProductosEnLista {
         this.panel.add(labelNombre,constraints);
         constraints.gridx=8;
         constraints.gridwidth=4;
-        constraints.anchor=GridBagConstraints.EAST;
         this.panel.add(botonEliminar,constraints);
     }
 
