@@ -18,26 +18,33 @@ public class PanelProductosEnLista {
     private final JButton botonEliminar;
     private final JLabel labelNombre;
     private final PanelListaCompra panelListaCompra;
+    private final GridBagConstraints constraints;
 
     public PanelProductosEnLista(Producto producto, int cantidad, PanelListaCompra panelListaCompra) {
         this.panelListaCompra = panelListaCompra;
         this.producto = producto;
         this.cantidad = cantidad;
-        this.panel = new JPanel(new GridLayout(0,2));
-        this.panel.setBackground(Color.BLUE);
-        this.panel.setForeground(Color.WHITE);
+        this.panel = new JPanel(new GridBagLayout());
         this.botonEliminar = new JButton("X");
-        UtilidadesEstilos.botonAzul(botonEliminar);
+        botonEliminar.setHorizontalAlignment(SwingConstants.RIGHT);
+        UtilidadesEstilos.botonDanger(botonEliminar);
         this.labelNombre = new JLabel("");
-        this.labelNombre.setForeground(Color.WHITE);
         this.labelNombre.setHorizontalAlignment(SwingConstants.CENTER);
         this.labelNombre.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,22));;
         actualizaLabelNombre();
         this.botonEliminar.addActionListener(e->{
             panelListaCompra.eliminaProducto(this);
         });
-        this.panel.add(labelNombre);
-        this.panel.add(botonEliminar);
+        this.constraints = new GridBagConstraints();
+        constraints.fill=GridBagConstraints.HORIZONTAL;
+        constraints.gridx=0;
+        constraints.gridy=0;
+        constraints.gridwidth=8;
+        this.panel.add(labelNombre,constraints);
+        constraints.gridx=8;
+        constraints.gridwidth=4;
+        constraints.anchor=GridBagConstraints.EAST;
+        this.panel.add(botonEliminar,constraints);
     }
 
     private void actualizaLabelNombre() {

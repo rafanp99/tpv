@@ -34,6 +34,7 @@ public class PanelProductos {
         this.panel = new JPanel(new GridLayout(0,1));
         this.produtosPorCategoria = new TreeMap<>();
         this.pestanyas = new JTabbedPane();
+        this.pestanyas.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
         rellenaProductosPorCategorias(productos);
         creaPestanyas();
     }
@@ -41,22 +42,17 @@ public class PanelProductos {
     private void creaPestanyas() {
         // TODO Revisar y limpiar este metodo
         Set<Producto> todosLosProductos = new HashSet<>();
-        JPanel pestanyaTodosProductos=new JPanel(new GridBagLayout());
+        JPanel pestanyaTodosProductos=new JPanel(new GridLayout(5,5));
         int posicionTodos=0;
         GridBagConstraints cTodos = new GridBagConstraints();
-        cTodos.fill = Box.Filler.HEIGHT;
+        cTodos.fill = GridBagConstraints.HORIZONTAL;
         for (Map.Entry<CategoriaProducto,HashSet<Producto>> entrada: produtosPorCategoria.entrySet()) {
             HashSet<Producto> productosDeCategoria = entrada.getValue();
-            JPanel panelPestanya = new JPanel(new GridBagLayout());
+            JPanel panelPestanya = new JPanel(new GridLayout(5,5));
             int posicionActual = 0;
-            GridBagConstraints c = new GridBagConstraints();
-            c.fill = Box.Filler.HEIGHT;
             for (Producto producto:productosDeCategoria) {
                 BotonProducto botonProducto = new BotonProducto(producto,this);
-                Vector2 posicion = calculaPosicionBoton(posicionActual);
-                c.gridx=posicion.getX();
-                c.gridy=posicion.getY();
-                panelPestanya.add(botonProducto.getBoton(),c);
+                panelPestanya.add(botonProducto.getBoton());
                 posicionActual++;
                 if(!todosLosProductos.contains(producto)){
                     todosLosProductos.add(producto);
@@ -68,7 +64,17 @@ public class PanelProductos {
                     pestanyaTodosProductos.add(botonProductoParaTodos.getBoton(),cTodos);
                 }
             }
+            for (int i=(25-productosDeCategoria.size()); i>0; i--){
+                JButton boton = new JButton();
+                boton.setVisible(false);
+                panelPestanya.add(boton);
+            }
             pestanyas.addTab(entrada.getKey().getNombre(),null,panelPestanya);
+        }
+        for (int i=(25-todosLosProductos.size()); i>0; i--){
+            JButton boton = new JButton();
+            boton.setVisible(false);
+            pestanyaTodosProductos.add(boton);
         }
         pestanyas.addTab("TODOS",null,pestanyaTodosProductos);
         panel.add(pestanyas);

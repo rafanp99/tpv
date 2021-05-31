@@ -15,6 +15,7 @@ public class PanelLateral {
     private final PanelListaCompra panelListaCompra;
     private final TPVCopisteria programaPrincipal;
     private final PanelBotonPagar panelBotonPagar;
+    private final GridBagConstraints constraint;
 
     public void seleccionaProducto(Producto producto){
         panelAnyadeProducto.cambiaProducto(producto);
@@ -35,13 +36,22 @@ public class PanelLateral {
     }
 
     public PanelLateral(TPVCopisteria programaPrincipal){
+        this.constraint = new GridBagConstraints();
         this.programaPrincipal = programaPrincipal;
-        this.panel = new JPanel(new GridLayout(0,1));
+        this.panel = new JPanel(new GridBagLayout());
+        constraint.fill=GridBagConstraints.HORIZONTAL;
+        constraint.anchor=GridBagConstraints.NORTH;
+        constraint.gridx=0;
+        constraint.gridy=0;
         this.panelAnyadeProducto = new PanelAnyadeProducto(this);
-        this.panel.add(panelAnyadeProducto.getPanel());
+        this.panel.add(panelAnyadeProducto.getPanel(),constraint);
         this.panelListaCompra = new PanelListaCompra(this);
-        this.panel.add(panelListaCompra.getPanel());
+        constraint.gridy=1;
+        constraint.gridheight=1;
         this.panelBotonPagar = new PanelBotonPagar(this);
-        this.panel.add(panelBotonPagar.getPanel());
+        this.panel.add(panelBotonPagar.getPanel(),constraint);
+        constraint.gridy=2;
+        constraint.gridheight=10;
+        this.panel.add(panelListaCompra.getPanel(),constraint);
     }
 }

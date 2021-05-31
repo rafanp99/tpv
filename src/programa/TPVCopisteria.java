@@ -59,16 +59,22 @@ public class TPVCopisteria {
         //intentaDisenyoBonito();
 
         JFrame frame = new JFrame();
-        JPanel panelPrincipal = new JPanel();
-        panelPrincipal.setLayout(new GridLayout(0,1));
         /* Quito por ahora la parte del logo y hora por temas de diseño
         PanelSuperiorFechaHora panelSuperiorFechaHora = new PanelSuperiorFechaHora();
         panelPrincipal.add(panelSuperiorFechaHora.getPanel());*/
-        JPanel panelProductosYLateral = new JPanel(new GridLayout(1,2));
-        panelProductosYLateral.add(tpvCopisteria.getPanelProductos());
-        panelProductosYLateral.add(tpvCopisteria.getPanelLateral());
-        panelPrincipal.add(panelProductosYLateral);
-        frame.add(panelPrincipal);
+        JPanel panelProductosYLateral = new JPanel(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.anchor=GridBagConstraints.NORTH;
+        constraints.fill=GridBagConstraints.CENTER;
+        constraints.gridx=0;
+        constraints.gridwidth=10;
+        constraints.gridheight=20;
+        constraints.gridy=0;
+        panelProductosYLateral.add(tpvCopisteria.getPanelProductos(),constraints);
+        constraints.gridwidth=4;
+        constraints.gridx=10;
+        panelProductosYLateral.add(tpvCopisteria.getPanelLateral(),constraints);
+        frame.add(panelProductosYLateral);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setUndecorated(true);

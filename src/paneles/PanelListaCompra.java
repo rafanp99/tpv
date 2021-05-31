@@ -14,6 +14,8 @@ public class PanelListaCompra {
     private final PanelLateral panelLateral;
     private final List<PanelProductosEnLista> listaCompra;
     private final JPanel panel;
+    private final GridBagConstraints constraints;
+    private int cantidadProductos;
 
     public JPanel getPanel() {
         return panel;
@@ -22,7 +24,12 @@ public class PanelListaCompra {
     public PanelListaCompra(PanelLateral panelLateral) {
         this.panelLateral = panelLateral;
         this.listaCompra = new ArrayList<>();
-        this.panel = new JPanel(new GridLayout(0,1));
+        this.panel = new JPanel(new GridBagLayout());
+        this.constraints = new GridBagConstraints();
+        this.constraints.gridx=0;
+        this.constraints.gridy=0;
+        this.constraints.fill=GridBagConstraints.HORIZONTAL;
+        this.cantidadProductos=0;
     }
 
     public int contieneProducto(Producto producto){
@@ -43,8 +50,10 @@ public class PanelListaCompra {
             productoEnListaActual.anyadeCantidad(cantidad);
         }else{
             PanelProductosEnLista nuevo =  new PanelProductosEnLista(producto,cantidad,this);
+            constraints.gridy=cantidadProductos;
             listaCompra.add(nuevo);
-            panel.add(nuevo.getPanel());
+            panel.add(nuevo.getPanel(),constraints);
+            cantidadProductos++;
         }
         System.out.println(listaCompra);
         return this;
@@ -59,6 +68,7 @@ public class PanelListaCompra {
             panel.remove(productosEnLista.getPanel());
             listaCompra.remove(existente);
             panel.updateUI();
+            cantidadProductos--;
             return true;
         }
         return false;
