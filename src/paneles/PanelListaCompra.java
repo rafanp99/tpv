@@ -20,6 +20,10 @@ public class PanelListaCompra {
         return panel;
     }
 
+    public List<PanelProductosEnLista> getListaCompra() {
+        return listaCompra;
+    }
+
     public PanelListaCompra(PanelLateral panelLateral) {
         this.panelLateral = panelLateral;
         this.listaCompra = new ArrayList<>();

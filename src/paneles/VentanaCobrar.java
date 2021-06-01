@@ -1,6 +1,7 @@
 package paneles;
 
 import programa.TPVCopisteria;
+import tiquets.Tiquet;
 import utilidades.estilos.UtilidadesEstilos;
 
 import javax.swing.*;
@@ -15,27 +16,32 @@ public class VentanaCobrar {
     private final PanelListaCompra panelListaCompra;
     private final JLabel labelACobrar;
     private final GridBagConstraints constraints;
+    private final JLabel labelEntregado;
     private final JLabel labelCambio;
     private final List<BotonMoneda> botonesMonedas;
     private final JButton botonFinalizar;
     private final JButton botonFinalizarEImprimir;
     private final JButton botonBorrar;
     private int aCobrar;
+    private int entregado;
     private int cambio;
 
     public VentanaCobrar(PanelListaCompra panelListaCompra) {
         this.panel = new JPanel(new GridBagLayout());
         this.panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-        this.ventana = new JFrame();
-        this.columnas=5;
+        this.ventana = new JFrame("Cobro");
+        this.ventana.setLocationRelativeTo(TPVCopisteria.FRAME);
+        this.columnas=6;
         this.panelListaCompra = panelListaCompra;
         this.botonesMonedas = new ArrayList<>();
         this.aCobrar = 0;
         this.cambio = 0;
+        this.entregado = 0;
         this.botonFinalizar = new JButton("Finalizar");
         this.botonFinalizarEImprimir = new JButton("Finalizar e imprimir");
         configuraBotonesFinalizar();
         this.botonBorrar = new JButton("Borrar");
+        this.labelEntregado=new JLabel("Entregado: "+String.format("%.2f",(double) entregado/100)+"€");
         configuraBotonBorrar();
         this.labelACobrar = new JLabel("Total: "+String.format("%.2f",(double) aCobrar/100)+"€");
         this.labelCambio = new JLabel("Cambio: "+String.format("%.2f",(double) cambio/100)+"€");
@@ -52,6 +58,7 @@ public class VentanaCobrar {
     private void configuraLabelsInicio() {
         this.labelCambio.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
         this.labelACobrar.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
+        this.labelEntregado.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
     }
 
     private void configuraBotonesFinalizar() {
@@ -61,23 +68,26 @@ public class VentanaCobrar {
         });
         UtilidadesEstilos.botonAzul(botonFinalizarEImprimir);
         botonFinalizarEImprimir.addActionListener(e->{
-            creaTiquet();
+            Tiquet tiquet = new Tiquet(panelListaCompra.getListaCompra());
             imprimeTiquet();
         });
     }
 
     private void imprimeTiquet() {
         //TODO
-        if(!checkeaCambio())return;
     }
 
     private void creaTiquet() {
         //TODO
         if(!checkeaCambio())return;
+        Tiquet tiquetActual = new Tiquet(panelListaCompra.getListaCompra());
+        TPVCopisteria.anyadeTiquetAHistorico(tiquetActual);
+        reiniciaCobro();
+        cerrar();
     }
 
     private boolean checkeaCambio() {
-        if(cambio<0){
+        if(entregado<aCobrar){
             JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"¡Aun queda dinero por cobrar!");
             return false;
         }
@@ -92,6 +102,7 @@ public class VentanaCobrar {
     private void actualizaLabels(){
         labelACobrar.setText("Total: "+String.format("%.2f",(double) aCobrar/100)+"€");
         labelCambio.setText("Cambio: "+String.format("%.2f",(double) cambio/100)+"€");
+        labelEntregado.setText("Entregado: "+String.format("%.2f",(double) entregado/100)+"€");
     }
 
     private void anyadeMonedas() {
@@ -117,10 +128,12 @@ public class VentanaCobrar {
         rellenaMonedas();
         constraints.gridx=0;
         constraints.gridy++;
-        constraints.gridwidth=2;
-        panel.add(botonFinalizar,constraints);
-        constraints.gridx=2;
+        constraints.fill=GridBagConstraints.HORIZONTAL;
+        constraints.weightx=1;
         constraints.gridwidth=3;
+        panel.add(botonFinalizar,constraints);
+        constraints.gridwidth=4;
+        constraints.gridx=3;
         panel.add(botonFinalizarEImprimir,constraints);
     }
 
@@ -129,7 +142,7 @@ public class VentanaCobrar {
         constraints.gridx=0;
         for (BotonMoneda botonMoneda:botonesMonedas) {
             panel.add(botonMoneda.getBoton(),constraints);
-            if(constraints.gridx==columnas-1){
+            if(constraints.gridx>=columnas){
                 constraints.gridx=0;
                 constraints.gridy++;
             }else{
@@ -148,9 +161,11 @@ public class VentanaCobrar {
         constraints.anchor=GridBagConstraints.NORTH;
         panel.add(labelACobrar,constraints);
         constraints.gridx=2;
+        panel.add(labelEntregado,constraints);
+        constraints.gridx=4;
         panel.add(labelCambio,constraints);
         constraints.gridwidth=1;
-        constraints.gridx=4;
+        constraints.gridx=6;
         panel.add(botonBorrar,constraints);
     }
 
@@ -165,6 +180,7 @@ public class VentanaCobrar {
         this.ventana.setVisible(false);
     }
     public void anyade(int valor) {
+        entregado+=valor;
         cambio+=valor;
         actualizaLabels();
     }
@@ -172,6 +188,7 @@ public class VentanaCobrar {
     public void reiniciaCobro() {
         aCobrar = panelListaCompra.getTotalEnCentimos();
         cambio = aCobrar*-1;
+        entregado = 0;
         actualizaLabels();
     }
 }

@@ -48,7 +48,6 @@ public class PanelAnyadeProducto{
         labelProducto.setText(producto.getNombre()+" - "+producto.getPrecioDecimal()+"€/unidad");
     }
 
-
     public void aceptar() {
         panelLateral.anyadeProductoALista(producto,panelIntroduceNumero.getCantidad());
         this.producto = null;

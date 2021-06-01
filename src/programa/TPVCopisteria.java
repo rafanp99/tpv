@@ -6,6 +6,8 @@ import paneles.PanelProductos;
 import paneles.PanelSuperiorFechaHora;
 import productos.CategoriaProducto;
 import productos.Producto;
+import tiquets.HistoricoTiquets;
+import tiquets.Tiquet;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,11 +20,15 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 public class TPVCopisteria {
+    private static HistoricoTiquets HISTORICO_TIQUETS;
     private static final Logger LOGGER = LogFactory.getLogger(TPVCopisteria.class.getName());
+    public static final JFrame FRAME = new JFrame();;
+    public static void anyadeTiquetAHistorico(Tiquet tiquet){
+        HISTORICO_TIQUETS.anyadeTiquet(tiquet);
+    }
     private final PanelSuperiorFechaHora panelSuperiorFechaHora;
     private final PanelProductos panelProductos;
     private final PanelLateral panelLateral;
-    public static final JFrame FRAME = new JFrame();;
 
     public JPanel getPanelSuperiorFechaHora() {
         return panelSuperiorFechaHora.getPanel();
@@ -43,6 +49,16 @@ public class TPVCopisteria {
         } catch (IOException ioe){
             LOGGER.severe("No se ha podido leer el csv de productos");
             throw ioe;
+        }
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("resources/historico.tiquets"))){
+            HISTORICO_TIQUETS = (HistoricoTiquets) ois.readObject();
+        } catch (ClassNotFoundException | EOFException e) {
+            e.printStackTrace();
+            HISTORICO_TIQUETS = new HistoricoTiquets();
+            LOGGER.severe("Hay algun fallo en el fichero del historico de tiquets, no detecta que sea un objeto correcto");
+        } catch (FileNotFoundException notFoundException){
+            HISTORICO_TIQUETS = new HistoricoTiquets();
+            LOGGER.info("El fichero de historico tiquets aun no existe");
         }
         panelSuperiorFechaHora = new PanelSuperiorFechaHora();
     }
@@ -75,8 +91,8 @@ public class TPVCopisteria {
         constraints.gridx=15;
         panelProductosYLateral.add(tpvCopisteria.getPanelLateral(),constraints);
         tpvCopisteria.FRAME.add(panelProductosYLateral);
-        tpvCopisteria.FRAME.setExtendedState(JFrame.MAXIMIZED_BOTH);
         tpvCopisteria.FRAME.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        tpvCopisteria.FRAME.setExtendedState(JFrame.MAXIMIZED_BOTH);
         tpvCopisteria.FRAME.setUndecorated(true);
         tpvCopisteria.FRAME.pack();
         tpvCopisteria.FRAME.setVisible(true);

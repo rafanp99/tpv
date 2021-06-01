@@ -7,10 +7,11 @@ import utilidades.estilos.UtilidadesEstilos;
 import javax.security.auth.Destroyable;
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-public class PanelProductosEnLista {
+public class PanelProductosEnLista implements Serializable {
     private final static Logger LOGGER = LogFactory.getLogger(PanelProductosEnLista.class.getName());
     private final JPanel panel;
     private final Producto producto;
