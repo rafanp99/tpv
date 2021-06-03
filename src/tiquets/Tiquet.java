@@ -13,6 +13,22 @@ public class Tiquet implements Serializable {
     private int cantidadProductos;
     private final LocalDateTime fechaActual;
 
+    public List<PanelProductosEnLista> getProductos() {
+        return productos;
+    }
+
+    public int getTotalEnCent() {
+        return totalEnCent;
+    }
+
+    public int getCantidadProductos() {
+        return cantidadProductos;
+    }
+
+    public LocalDateTime getFechaActual() {
+        return fechaActual;
+    }
+
     public Tiquet(List<PanelProductosEnLista> productos) {
         this.productos = new ArrayList<>(productos);
         this.fechaActual = LocalDateTime.now();

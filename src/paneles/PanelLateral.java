@@ -6,9 +6,10 @@ import programa.TPVCopisteria;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.logging.Logger;
 
-public class PanelLateral {
+public class PanelLateral implements Serializable {
     private static final Logger LOGGER = LogFactory.getLogger(PanelLateral.class.getName());
     private final JPanel panel;
     private final PanelAnyadeProducto panelAnyadeProducto;

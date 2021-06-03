@@ -5,11 +5,12 @@ import productos.Producto;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class PanelListaCompra {
+public class PanelListaCompra implements Serializable {
     private static final Logger LOGGER = LogFactory.getLogger(PanelListaCompra.class.getName());
     private final PanelLateral panelLateral;
     private final List<PanelProductosEnLista> listaCompra;
@@ -81,5 +82,11 @@ public class PanelListaCompra {
             resultado += anyadir;
         }
         return resultado;
+    }
+
+    public void vaciar() {
+        for (int i=listaCompra.size()-1; listaCompra.size()>0;i--){
+            eliminaProducto(listaCompra.get(i));
+        }
     }
 }

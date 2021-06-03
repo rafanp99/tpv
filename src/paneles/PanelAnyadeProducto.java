@@ -5,9 +5,10 @@ import productos.Producto;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.logging.Logger;
 
-public class PanelAnyadeProducto{
+public class PanelAnyadeProducto implements Serializable {
     private static final Logger LOGGER = LogFactory.getLogger(PanelAnyadeProducto.class.getName());
     private final JPanel panel;
     private final PanelLateral panelLateral;

@@ -7,9 +7,10 @@ import logger.LogFactory;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
+import java.io.Serializable;
 import java.util.logging.Logger;
 
-public class PanelIntroduceNumero {
+public class PanelIntroduceNumero implements Serializable {
     private final Logger LOGGER = LogFactory.getLogger(PanelIntroduceNumero.class.getName());
     private final PanelAnyadeProducto panelAnyadeProducto;
     private int cantidad;

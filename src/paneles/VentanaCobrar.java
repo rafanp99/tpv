@@ -83,6 +83,7 @@ public class VentanaCobrar {
         Tiquet tiquetActual = new Tiquet(panelListaCompra.getListaCompra());
         TPVCopisteria.anyadeTiquetAHistorico(tiquetActual);
         reiniciaCobro();
+        panelListaCompra.vaciar();
         cerrar();
     }
 

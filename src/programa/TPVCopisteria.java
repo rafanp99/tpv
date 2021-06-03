@@ -3,7 +3,7 @@ package programa;
 import logger.LogFactory;
 import paneles.PanelLateral;
 import paneles.PanelProductos;
-import paneles.PanelSuperiorFechaHora;
+import paneles.PanelBarraSuperior;
 import productos.CategoriaProducto;
 import productos.Producto;
 import tiquets.HistoricoTiquets;
@@ -26,12 +26,16 @@ public class TPVCopisteria {
     public static void anyadeTiquetAHistorico(Tiquet tiquet){
         HISTORICO_TIQUETS.anyadeTiquet(tiquet);
     }
-    private final PanelSuperiorFechaHora panelSuperiorFechaHora;
+    private final PanelBarraSuperior panelBarraSuperior;
     private final PanelProductos panelProductos;
     private final PanelLateral panelLateral;
 
-    public JPanel getPanelSuperiorFechaHora() {
-        return panelSuperiorFechaHora.getPanel();
+    public static void guardaHistorico() {
+        /*try(ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(new File("resources/historico.tiquets")))){
+            oos.writeObject(HISTORICO_TIQUETS);
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+        }*/
     }
 
     public JPanel getPanelProductos() {
@@ -60,7 +64,7 @@ public class TPVCopisteria {
             HISTORICO_TIQUETS = new HistoricoTiquets();
             LOGGER.info("El fichero de historico tiquets aun no existe");
         }
-        panelSuperiorFechaHora = new PanelSuperiorFechaHora();
+        this.panelBarraSuperior = new PanelBarraSuperior();
     }
 
     private static void intentaDisenyoBonito(){
@@ -73,24 +77,32 @@ public class TPVCopisteria {
 
     public static void main(String[] args) throws IOException{
         TPVCopisteria tpvCopisteria = new TPVCopisteria();
+        JPanel panelGlobal = new JPanel(new GridBagLayout());
         //intentaDisenyoBonito();
-        /* Quito por ahora la parte del logo y hora por temas de diseño
-        PanelSuperiorFechaHora panelSuperiorFechaHora = new PanelSuperiorFechaHora();
-        panelPrincipal.add(panelSuperiorFechaHora.getPanel());*/
+        PanelBarraSuperior panelBarraSuperior = new PanelBarraSuperior();
         JPanel panelProductosYLateral = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.anchor=GridBagConstraints.NORTH;
         constraints.fill=GridBagConstraints.HORIZONTAL;
+        constraints.gridx=0;
+        constraints.gridy=0;
+        constraints.gridwidth=20;
         constraints.weightx=1;
+        constraints.gridheight=2;
+        panelGlobal.add(panelBarraSuperior.getPanel(),constraints);
         constraints.gridx=0;
         constraints.gridwidth=15;
         constraints.gridheight=20;
-        constraints.gridy=0;
         panelProductosYLateral.add(tpvCopisteria.getPanelProductos(),constraints);
         constraints.gridwidth=5;
         constraints.gridx=15;
         panelProductosYLateral.add(tpvCopisteria.getPanelLateral(),constraints);
-        tpvCopisteria.FRAME.add(panelProductosYLateral);
+        constraints.gridx=1;
+        constraints.gridy=2;
+        constraints.gridwidth=1;
+        constraints.gridheight=8;
+        panelGlobal.add(panelProductosYLateral,constraints);
+        tpvCopisteria.FRAME.add(panelGlobal);
         tpvCopisteria.FRAME.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         tpvCopisteria.FRAME.setExtendedState(JFrame.MAXIMIZED_BOTH);
         tpvCopisteria.FRAME.setUndecorated(true);
