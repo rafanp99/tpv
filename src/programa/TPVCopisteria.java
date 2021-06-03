@@ -20,11 +20,11 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 public class TPVCopisteria {
-    private static HistoricoTiquets HISTORICO_TIQUETS;
+    private static HistoricoTiquets historicoTiquets;
     private static final Logger LOGGER = LogFactory.getLogger(TPVCopisteria.class.getName());
-    public static final JFrame FRAME = new JFrame();;
+    public static final JFrame FRAME = new JFrame();
     public static void anyadeTiquetAHistorico(Tiquet tiquet){
-        HISTORICO_TIQUETS.anyadeTiquet(tiquet);
+        historicoTiquets.anyadeTiquet(tiquet);
     }
     private final PanelBarraSuperior panelBarraSuperior;
     private final PanelProductos panelProductos;
@@ -38,9 +38,22 @@ public class TPVCopisteria {
 
     public static void guardaHistorico() {
         try(ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(new File("resources/historico.tiquets")))){
-            oos.writeObject(HISTORICO_TIQUETS);
+            oos.writeObject(historicoTiquets);
         }catch (IOException ioe){
             ioe.printStackTrace();
+        }
+    }
+
+    public static void imprimeTicket(Tiquet tiquet){
+        JTextPane jtp = new JTextPane();
+        jtp.setBackground(Color.white);
+        jtp.setFont(new Font("Courier New",Font.BOLD,16));
+        jtp.setText(tiquet.getInforme());
+        boolean show = true;
+        try {
+            jtp.print(null, null, show, null, null, show);
+        } catch (java.awt.print.PrinterException ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -66,21 +79,21 @@ public class TPVCopisteria {
             throw ioe;
         }
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("resources/historico.tiquets"))){
-            HISTORICO_TIQUETS = (HistoricoTiquets) ois.readObject();
-            for (Tiquet tiquet:HISTORICO_TIQUETS.getTiquets()) {
+            historicoTiquets = (HistoricoTiquets) ois.readObject();
+            for (Tiquet tiquet: historicoTiquets.getTiquets()) {
                 System.out.println(tiquet.getCantidadProductos()+" "+tiquet.getTotalEnCent()+"centimos "+tiquet.getFechaFormateada());
             }
         } catch (ClassNotFoundException | EOFException e) {
             e.printStackTrace();
-            HISTORICO_TIQUETS = new HistoricoTiquets();
+            historicoTiquets = new HistoricoTiquets();
             LOGGER.severe("Hay algun fallo en el fichero del historico de tiquets, no detecta que sea un objeto correcto");
         } catch (FileNotFoundException notFoundException){
-            HISTORICO_TIQUETS = new HistoricoTiquets();
+            historicoTiquets = new HistoricoTiquets();
             LOGGER.info("El fichero de historico tiquets aun no existe");
         } catch (InvalidClassException icException){
             icException.printStackTrace();
             LOGGER.info("El fichero del historico de tiquets esta obsoleto, creando uno nuevo");
-            HISTORICO_TIQUETS = new HistoricoTiquets();
+            historicoTiquets = new HistoricoTiquets();
 
         }
         this.panelBarraSuperior = new PanelBarraSuperior();

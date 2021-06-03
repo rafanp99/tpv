@@ -56,4 +56,9 @@ public class Tiquet implements Serializable {
             cantidadProductos+=producto.getCantidad();
         }
     }
+
+    public String getInforme() {
+        String salida="";
+        return salida;
+    }
 }

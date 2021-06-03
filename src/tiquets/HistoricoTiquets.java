@@ -1,5 +1,7 @@
 package tiquets;
 
+import programa.TPVCopisteria;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.ArrayList;
@@ -17,6 +19,7 @@ public class HistoricoTiquets implements Serializable {
 
     public HistoricoTiquets anyadeTiquet(Tiquet tiquet){
         tiquets.add(tiquet);
+        TPVCopisteria.guardaHistorico();
         return this;
     }
 }

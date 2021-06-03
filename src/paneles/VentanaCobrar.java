@@ -66,26 +66,29 @@ public class VentanaCobrar {
         UtilidadesEstilos.botonAzul(botonFinalizar);
         botonFinalizar.addActionListener(e->{
             creaTiquet();
+            reiniciaCobro();
+            panelListaCompra.vaciar();
+            cerrar();
         });
         UtilidadesEstilos.botonAzul(botonFinalizarEImprimir);
         botonFinalizarEImprimir.addActionListener(e->{
             Tiquet tiquet = new Tiquet(panelListaCompra.getListaCompra());
-            imprimeTiquet();
+            if(tiquet==null){
+                return;
+            }
+            TPVCopisteria.imprimeTicket(tiquet);
+            reiniciaCobro();
+            panelListaCompra.vaciar();
+            cerrar();
         });
     }
 
-    private void imprimeTiquet() {
+    private Tiquet creaTiquet() {
         //TODO
-    }
-
-    private void creaTiquet() {
-        //TODO
-        if(!checkeaCambio())return;
+        if(!checkeaCambio())return null;
         Tiquet tiquetActual = new Tiquet(panelListaCompra.getListaCompra());
         TPVCopisteria.anyadeTiquetAHistorico(tiquetActual);
-        reiniciaCobro();
-        panelListaCompra.vaciar();
-        cerrar();
+        return tiquetActual;
     }
 
     private boolean checkeaCambio() {
