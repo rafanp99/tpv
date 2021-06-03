@@ -35,7 +35,11 @@ public class PanelBotonPagar {
         actualizaPrecio();
         UtilidadesEstilos.botonAzul(boton);
         this.panel = new JPanel(new GridLayout(0,1));
-        this.panel.add(boton);
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.fill=GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx=1;
+        gridBagConstraints.weighty=1;
+        this.panel.add(boton,gridBagConstraints);
     }
 
     private void actualizaPrecio() {

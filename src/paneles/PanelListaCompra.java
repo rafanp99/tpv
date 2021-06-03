@@ -10,7 +10,7 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
 
-public class PanelListaCompra implements Serializable {
+public class PanelListaCompra {
     private static final Logger LOGGER = LogFactory.getLogger(PanelListaCompra.class.getName());
     private final PanelLateral panelLateral;
     private final List<PanelProductosEnLista> listaCompra;
@@ -33,12 +33,13 @@ public class PanelListaCompra implements Serializable {
         this.constraints.gridx=0;
         this.constraints.gridy=0;
         this.constraints.weightx=1;
+        this.constraints.weighty=1;
         this.constraints.fill=GridBagConstraints.HORIZONTAL;
     }
 
     public int contieneProducto(Producto producto){
         for (int i = 0; i < listaCompra.size() ; i++) {
-            if(listaCompra.get(i).getProducto().equals(producto)){
+            if(listaCompra.get(i).getProductoEnTiquet().getProducto().equals(producto)){
                 return i;
             }
         }
@@ -65,7 +66,7 @@ public class PanelListaCompra implements Serializable {
         int existente = listaCompra.indexOf(producto);
         if(existente>=0){
             PanelProductosEnLista productosEnLista = listaCompra.get(existente);
-            panelLateral.getPanelBotonPagar().restaPrecio(productosEnLista.getProducto().getPrecioCentimos()*productosEnLista.getCantidad());
+            panelLateral.getPanelBotonPagar().restaPrecio(productosEnLista.getProductoEnTiquet().getProducto().getPrecioCentimos()*productosEnLista.getProductoEnTiquet().getCantidad());
             panel.remove(productosEnLista.getPanel());
             listaCompra.remove(existente);
             panel.updateUI();
@@ -78,7 +79,7 @@ public class PanelListaCompra implements Serializable {
     public int getTotalEnCentimos(){
         int resultado = 0;
         for (PanelProductosEnLista productoEnLista:listaCompra) {
-            int anyadir = productoEnLista.getCantidad()*productoEnLista.getProducto().getPrecioCentimos();
+            int anyadir = productoEnLista.getProductoEnTiquet().getCantidad()*productoEnLista.getProductoEnTiquet().getProducto().getPrecioCentimos();
             resultado += anyadir;
         }
         return resultado;

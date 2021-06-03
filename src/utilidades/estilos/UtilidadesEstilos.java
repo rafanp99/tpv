@@ -9,6 +9,7 @@ public final class UtilidadesEstilos {
     private UtilidadesEstilos(){ }
     public static void botonAzul(JButton boton){
         // TODO En linux no los colorea de ninguna forma
+        boton.setOpaque(true);
         boton.setBackground(new Color(0,39,96));
         boton.setForeground(Color.white);
         boton.setHorizontalAlignment(SwingConstants.CENTER);

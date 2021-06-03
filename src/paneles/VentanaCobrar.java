@@ -1,5 +1,6 @@
 package paneles;
 
+import jdk.nashorn.internal.scripts.JD;
 import programa.TPVCopisteria;
 import tiquets.Tiquet;
 import utilidades.estilos.UtilidadesEstilos;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class VentanaCobrar {
     private final int columnas;
-    private final JFrame ventana;
+    private final JDialog ventana;
     private final JPanel panel;
     private final PanelListaCompra panelListaCompra;
     private final JLabel labelACobrar;
@@ -29,7 +30,7 @@ public class VentanaCobrar {
     public VentanaCobrar(PanelListaCompra panelListaCompra) {
         this.panel = new JPanel(new GridBagLayout());
         this.panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
-        this.ventana = new JFrame("Cobro");
+        this.ventana = new JDialog(TPVCopisteria.FRAME,"Cobro",true);
         this.ventana.setLocationRelativeTo(TPVCopisteria.FRAME);
         this.columnas=6;
         this.panelListaCompra = panelListaCompra;

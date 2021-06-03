@@ -18,6 +18,8 @@ public class PanelBarraSuperior {
     public PanelBarraSuperior() {
         constraint = new GridBagConstraints();
         constraint.gridheight=2;
+        constraint.weightx=1;
+        constraint.weighty=1;
         panel = new JPanel(new GridBagLayout());
         panel.setBackground(new Color(0,39,96));
         botonGuardaHistorico = new JButton("Guardar historico Tiquets");

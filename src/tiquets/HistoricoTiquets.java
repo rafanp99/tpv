@@ -11,6 +11,10 @@ public class HistoricoTiquets implements Serializable {
         this.tiquets = new ArrayList<>();
     }
 
+    public List<Tiquet> getTiquets() {
+        return tiquets;
+    }
+
     public HistoricoTiquets anyadeTiquet(Tiquet tiquet){
         tiquets.add(tiquet);
         return this;

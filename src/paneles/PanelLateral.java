@@ -9,7 +9,7 @@ import java.awt.*;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
-public class PanelLateral implements Serializable {
+public class PanelLateral {
     private static final Logger LOGGER = LogFactory.getLogger(PanelLateral.class.getName());
     private final JPanel panel;
     private final PanelAnyadeProducto panelAnyadeProducto;
@@ -44,6 +44,7 @@ public class PanelLateral implements Serializable {
         constraint.fill=GridBagConstraints.HORIZONTAL;
         constraint.anchor=GridBagConstraints.NORTH;
         constraint.weightx=1;
+        constraint.weighty=1;
         constraint.gridx=0;
         constraint.gridy=0;
         this.panelAnyadeProducto = new PanelAnyadeProducto(this);

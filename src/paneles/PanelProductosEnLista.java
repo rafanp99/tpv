@@ -2,6 +2,7 @@ package paneles;
 
 import logger.LogFactory;
 import productos.Producto;
+import productos.ProductoEnTiquet;
 import utilidades.estilos.UtilidadesEstilos;
 
 import javax.security.auth.Destroyable;
@@ -11,11 +12,10 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-public class PanelProductosEnLista implements Serializable {
+public class PanelProductosEnLista {
     private final static Logger LOGGER = LogFactory.getLogger(PanelProductosEnLista.class.getName());
     private final JPanel panel;
-    private final Producto producto;
-    private int cantidad;
+    private final ProductoEnTiquet productoEnTiquet;
     private final JButton botonEliminar;
     private final JLabel labelNombre;
     private final PanelListaCompra panelListaCompra;
@@ -23,8 +23,7 @@ public class PanelProductosEnLista implements Serializable {
 
     public PanelProductosEnLista(Producto producto, int cantidad, PanelListaCompra panelListaCompra) {
         this.panelListaCompra = panelListaCompra;
-        this.producto = producto;
-        this.cantidad = cantidad;
+        this.productoEnTiquet = new ProductoEnTiquet(producto,cantidad);
         this.botonEliminar = new JButton("X");
         botonEliminar.setHorizontalAlignment(SwingConstants.RIGHT);
         UtilidadesEstilos.botonCerrar(botonEliminar);
@@ -51,8 +50,12 @@ public class PanelProductosEnLista implements Serializable {
         this.panel.add(botonEliminar,constraints);
     }
 
+    public ProductoEnTiquet getProductoEnTiquet() {
+        return productoEnTiquet;
+    }
+
     private void actualizaLabelNombre() {
-        this.labelNombre.setText(producto.getNombre()+" "+producto.getPrecioDecimal()+"€ x "+cantidad+" | Subtotal: "+String.format("%.2f",(double) (producto.getPrecioCentimos()*cantidad) / 100)+"€");
+        this.labelNombre.setText(productoEnTiquet.getProducto().getNombre()+" "+productoEnTiquet.getProducto().getPrecioDecimal()+"€ x "+productoEnTiquet.getCantidad()+" | Subtotal: "+String.format("%.2f",(double) (productoEnTiquet.getProducto().getPrecioCentimos()*productoEnTiquet.getCantidad()) / 100)+"€");
     }
 
     @Override
@@ -60,28 +63,22 @@ public class PanelProductosEnLista implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PanelProductosEnLista that = (PanelProductosEnLista) o;
-        return Objects.equals(producto, that.producto);
+        return Objects.equals(productoEnTiquet, that.getProductoEnTiquet());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(producto);
+        return Objects.hash(productoEnTiquet.getProducto());
     }
 
     public JPanel getPanel() {
         return panel;
     }
 
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
 
     public void anyadeCantidad(int cantidad){
-        this.cantidad += cantidad;
+        // TODO
+        productoEnTiquet.anyadeCantidad(cantidad);
         actualizaLabelNombre();
     }
 }

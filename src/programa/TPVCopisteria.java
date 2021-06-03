@@ -29,13 +29,23 @@ public class TPVCopisteria {
     private final PanelBarraSuperior panelBarraSuperior;
     private final PanelProductos panelProductos;
     private final PanelLateral panelLateral;
+    private final JPanel panelGlobal;
+    private final GridBagConstraints constraintGlobal;
+
+    public JPanel getPanelGlobal() {
+        return panelGlobal;
+    }
 
     public static void guardaHistorico() {
-        /*try(ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(new File("resources/historico.tiquets")))){
+        try(ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(new File("resources/historico.tiquets")))){
             oos.writeObject(HISTORICO_TIQUETS);
         }catch (IOException ioe){
             ioe.printStackTrace();
-        }*/
+        }
+    }
+
+    public PanelBarraSuperior getPanelBarraSuperior() {
+        return panelBarraSuperior;
     }
 
     public JPanel getPanelProductos() {
@@ -47,6 +57,7 @@ public class TPVCopisteria {
     }
 
     public TPVCopisteria() throws IOException {
+        this.panelGlobal = new JPanel(new GridBagLayout());
         panelLateral = new PanelLateral(this);
         try {
             panelProductos = new PanelProductos(leeProductos(),panelLateral);
@@ -56,6 +67,9 @@ public class TPVCopisteria {
         }
         try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("resources/historico.tiquets"))){
             HISTORICO_TIQUETS = (HistoricoTiquets) ois.readObject();
+            for (Tiquet tiquet:HISTORICO_TIQUETS.getTiquets()) {
+                System.out.println(tiquet.getCantidadProductos()+" "+tiquet.getTotalEnCent()+"centimos "+tiquet.getFechaFormateada());
+            }
         } catch (ClassNotFoundException | EOFException e) {
             e.printStackTrace();
             HISTORICO_TIQUETS = new HistoricoTiquets();
@@ -63,8 +77,35 @@ public class TPVCopisteria {
         } catch (FileNotFoundException notFoundException){
             HISTORICO_TIQUETS = new HistoricoTiquets();
             LOGGER.info("El fichero de historico tiquets aun no existe");
+        } catch (InvalidClassException icException){
+            icException.printStackTrace();
+            LOGGER.info("El fichero del historico de tiquets esta obsoleto, creando uno nuevo");
+            HISTORICO_TIQUETS = new HistoricoTiquets();
+
         }
         this.panelBarraSuperior = new PanelBarraSuperior();
+        this.constraintGlobal = new GridBagConstraints();
+        disenyaPanelGlobal();
+    }
+
+    private void disenyaPanelGlobal() {
+        constraintGlobal.anchor=GridBagConstraints.NORTH;
+        constraintGlobal.fill=GridBagConstraints.HORIZONTAL;
+        constraintGlobal.gridx=0;
+        constraintGlobal.gridy=0;
+        constraintGlobal.weightx=1;
+        constraintGlobal.weighty=1;
+        constraintGlobal.gridwidth=20;
+        constraintGlobal.gridheight=2;
+        panelGlobal.add(panelBarraSuperior.getPanel(),constraintGlobal);
+        constraintGlobal.gridx=0;
+        constraintGlobal.gridy=2;
+        constraintGlobal.gridwidth=15;
+        constraintGlobal.gridheight=20;
+        panelGlobal.add(panelProductos.getPanel(),constraintGlobal);
+        constraintGlobal.gridwidth=5;
+        constraintGlobal.gridx=15;
+        panelGlobal.add(panelLateral.getPanel(),constraintGlobal);
     }
 
     private static void intentaDisenyoBonito(){
@@ -77,35 +118,12 @@ public class TPVCopisteria {
 
     public static void main(String[] args) throws IOException{
         TPVCopisteria tpvCopisteria = new TPVCopisteria();
-        JPanel panelGlobal = new JPanel(new GridBagLayout());
         //intentaDisenyoBonito();
-        PanelBarraSuperior panelBarraSuperior = new PanelBarraSuperior();
-        JPanel panelProductosYLateral = new JPanel(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.anchor=GridBagConstraints.NORTH;
-        constraints.fill=GridBagConstraints.HORIZONTAL;
-        constraints.gridx=0;
-        constraints.gridy=0;
-        constraints.gridwidth=20;
-        constraints.weightx=1;
-        constraints.gridheight=2;
-        panelGlobal.add(panelBarraSuperior.getPanel(),constraints);
-        constraints.gridx=0;
-        constraints.gridwidth=15;
-        constraints.gridheight=20;
-        panelProductosYLateral.add(tpvCopisteria.getPanelProductos(),constraints);
-        constraints.gridwidth=5;
-        constraints.gridx=15;
-        panelProductosYLateral.add(tpvCopisteria.getPanelLateral(),constraints);
-        constraints.gridx=1;
-        constraints.gridy=2;
-        constraints.gridwidth=1;
-        constraints.gridheight=8;
-        panelGlobal.add(panelProductosYLateral,constraints);
-        tpvCopisteria.FRAME.add(panelGlobal);
+        tpvCopisteria.FRAME.add(tpvCopisteria.getPanelGlobal());
         tpvCopisteria.FRAME.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         tpvCopisteria.FRAME.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        tpvCopisteria.FRAME.setUndecorated(true);
+        //Quitado de pantalla completa porque para el jdialog del cobro no me deja si esta undecorated
+        //tpvCopisteria.FRAME.setUndecorated(true);
         tpvCopisteria.FRAME.pack();
         tpvCopisteria.FRAME.setVisible(true);
         tpvCopisteria.FRAME.setLocationRelativeTo(null);
