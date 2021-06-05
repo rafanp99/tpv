@@ -17,6 +17,16 @@ public final class UtilidadesEstilos {
         boton.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         boton.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
     }
+    public static void botonAzulClaro(JButton boton){
+        boton.setForeground(Color.white);
+        //Opaque y border painted solo para que en linux se vean los colores
+        boton.setOpaque(true);
+        boton.setBorderPainted(false);
+        boton.setBackground(new Color(69, 123, 157));
+        boton.setHorizontalAlignment(SwingConstants.CENTER);
+        boton.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
+        boton.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
+    }
     public static void botonCerrar(JButton boton){
         boton.setForeground(Color.WHITE);
         boton.setOpaque(true);

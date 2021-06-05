@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 
 public class Producto implements Serializable {
-    private static final Logger LOGGER = LogFactory.getLogger(Producto.class.getName());
+    private static final Logger LOGGER = LogFactory.getLogger();
     private String nombre;
     private int precioCentimos;
     private String uriImagen;

@@ -13,7 +13,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 public class PanelProductosEnLista {
-    private final static Logger LOGGER = LogFactory.getLogger(PanelProductosEnLista.class.getName());
+    private final static Logger LOGGER = LogFactory.getLogger();
     private final JPanel panel;
     private final ProductoEnTiquet productoEnTiquet;
     private final JButton botonEliminar;

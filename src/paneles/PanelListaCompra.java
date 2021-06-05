@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 public class PanelListaCompra {
-    private static final Logger LOGGER = LogFactory.getLogger(PanelListaCompra.class.getName());
+    private static final Logger LOGGER = LogFactory.getLogger();
     private final PanelLateral panelLateral;
     private final List<PanelProductosEnLista> listaCompra;
     private final JPanel panel;

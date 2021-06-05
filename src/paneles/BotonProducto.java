@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class BotonProducto {
     private final PanelProductos panelProductos;
-    private static final Logger LOGGER = LogFactory.getLogger(BotonProducto.class.getName());
+    private static final Logger LOGGER = LogFactory.getLogger();
     private final JButton boton;
     private final Producto producto;
 

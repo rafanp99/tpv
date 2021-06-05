@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.logging.Logger;
 
 public class PanelIntroduceNumero {
-    private final Logger LOGGER = LogFactory.getLogger(PanelIntroduceNumero.class.getName());
+    private final Logger LOGGER = LogFactory.getLogger();
     private final PanelAnyadeProducto panelAnyadeProducto;
     private int cantidad;
     private final JPanel panel;

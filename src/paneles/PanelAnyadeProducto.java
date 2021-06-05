@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.logging.Logger;
 
 public class PanelAnyadeProducto {
-    private static final Logger LOGGER = LogFactory.getLogger(PanelAnyadeProducto.class.getName());
+    private static final Logger LOGGER = LogFactory.getLogger();
     private final JPanel panel;
     private final PanelLateral panelLateral;
     private final JLabel labelProducto;

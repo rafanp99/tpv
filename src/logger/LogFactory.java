@@ -9,31 +9,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-public final class LogFactory implements Serializable {
-
-
-	private LogFactory() {
-	}
-
-	// Patrón factory para el logger
-	public static Logger getLogger(String nombreClase) {
-		// Eliminama la configuracion del log raiz
-		Logger rootLogger = Logger.getLogger("");
-		Handler[] handlers = rootLogger.getHandlers();
-		if (handlers.length > 0 && handlers[0] instanceof ConsoleHandler) {
-			rootLogger.removeHandler(handlers[0]);
-		}
-		
+public class LogFactory {
+	// Patrónn Factory Method
+	public static Logger getLogger() {
 		// Creamos el nuevo Logger con todos los niveles para consola y fichero
-		Logger result = Logger.getLogger(nombreClase);
-		
+		Logger result = Logger.getLogger("logging.txt");
+
 		Handler consoleHandler = new ConsoleHandler();
 		consoleHandler.setLevel(Level.ALL);
 
 		Handler fileTxt = null;
 		try {
-			fileTxt = new FileHandler("logging.txt",true);
-			
+			fileTxt = new FileHandler("logging.txt");
+
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileTxt.setFormatter(simpleFormatter);
 			fileTxt.setLevel(Level.INFO);
@@ -44,7 +32,7 @@ public final class LogFactory implements Serializable {
 		result.addHandler(consoleHandler);
 		result.addHandler(fileTxt);
 		result.setLevel(Level.FINE);
-		
+
 		return result;
 	}
 

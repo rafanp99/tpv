@@ -8,7 +8,7 @@ import javax.swing.plaf.BorderUIResource;
 import java.util.logging.Logger;
 
 public class BotonMoneda {
-    private final static Logger LOGGER = LogFactory.getLogger(BotonMoneda.class.getName());
+    private final static Logger LOGGER = LogFactory.getLogger();
     private final int valor;
     private final JButton boton;
     private final VentanaCobrar ventanaCobrar;

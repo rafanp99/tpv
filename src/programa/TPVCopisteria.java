@@ -3,30 +3,37 @@ package programa;
 import logger.LogFactory;
 import paneles.PanelLateral;
 import paneles.PanelProductos;
-import paneles.PanelBarraSuperior;
 import productos.CategoriaProducto;
 import productos.Producto;
+import productos.ProductoEnTiquet;
 import tiquets.HistoricoTiquets;
 import tiquets.Tiquet;
+import utilidades.fechas.UtilidadesFechas;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashSet;
+import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 import java.util.logging.Logger;
 
 public class TPVCopisteria {
-    private static HistoricoTiquets historicoTiquets;
-    private static final Logger LOGGER = LogFactory.getLogger(TPVCopisteria.class.getName());
+    private static final Logger LOGGER = LogFactory.getLogger();
     public static final JFrame FRAME = new JFrame();
+    private static HistoricoTiquets historicoTiquets;
+    private static final HistoricoTiquets tiquetsDelDia = new HistoricoTiquets();
+    private static final LocalDateTime fechaInicio = LocalDateTime.now();
     public static void anyadeTiquetAHistorico(Tiquet tiquet){
         historicoTiquets.anyadeTiquet(tiquet);
     }
-    private final PanelBarraSuperior panelBarraSuperior;
+    public static void anyadeTiquetDia(Tiquet tiquet){
+        tiquetsDelDia.anyadeTiquet(tiquet);
+    }
     private final PanelProductos panelProductos;
     private final PanelLateral panelLateral;
     private final JPanel panelGlobal;
@@ -44,21 +51,158 @@ public class TPVCopisteria {
         }
     }
 
+    public static void generaEstadisticasTPV(){
+        //TODO REVISAR EN JAR
+        carpetaInformes();
+        checkeaImagenYCSS();
+        LocalDateTime fechaActual = LocalDateTime.now();
+        Tiquet tiquetMasGrande = historicoTiquets.getTiquets().get(0);
+        int totalProductosComprados = 0;
+        int totalCompras = 0;
+        int cantidadCompras = historicoTiquets.getTiquets().size();
+        int compraMasCara = 0;
+        Map<Producto,Integer> ventasPorProducto = new HashMap<>();
+        for (Tiquet tiquet:historicoTiquets.getTiquets()) {
+            if(tiquet.getTotalEnCent()>tiquetMasGrande.getTotalEnCent()){
+                tiquetMasGrande=tiquet;
+            }
+            //Repasa todos los tiquets y saca las estadisiticas basicas
+            totalCompras += tiquet.getTotalEnCent();
+            if (compraMasCara < tiquet.getTotalEnCent()){
+                compraMasCara = tiquet.getTotalEnCent();
+            }
+            //Repasa cada producto para sacar estadisticas concretas
+            for (ProductoEnTiquet producto:tiquet.getProductos()) {
+                if(!ventasPorProducto.containsKey(producto.getProducto())){
+                    //Si no existe lo añade al mapa
+                    ventasPorProducto.put(producto.getProducto(),producto.getCantidad());
+                }else{
+                    //Si existe le suma la cantidad
+                    int cantidadAnterior = ventasPorProducto.get(producto.getProducto());
+                    int nuevaCantidad = cantidadAnterior + producto.getCantidad();
+                    ventasPorProducto.put(producto.getProducto(),nuevaCantidad);
+                }
+                totalProductosComprados += producto.getCantidad();
+            }
+        }
+        int generadoConMasVendido = 0;
+        Producto productoMasVendido = historicoTiquets.getTiquets().get(0).getProductos().get(0).getProducto();
+        for (Map.Entry<Producto,Integer> entrada:ventasPorProducto.entrySet()) {
+            Producto producto = entrada.getKey();
+            int cantidad = entrada.getValue();
+            int generadoPorProducto = cantidad*producto.getPrecioCentimos();
+            if(generadoConMasVendido<generadoPorProducto){
+                generadoConMasVendido=generadoPorProducto;
+                productoMasVendido=producto;
+            }
+        }
+        int mediaProductosCompra = totalProductosComprados/cantidadCompras;
+        int compraMedia = totalCompras/cantidadCompras;
+        String archivoHTML = "<!DOCTYPE html>\n";
+        archivoHTML += "<html lang=\"es\">\n";
+        //Comienza el HEAD
+        archivoHTML += "<head>\n";
+        archivoHTML += "<meta charset=\"UTF-8\">\n";
+        archivoHTML += "<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n";
+        archivoHTML += "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n";
+        archivoHTML += "<title>Informe estadisticas TPV</title>\n";
+        archivoHTML += "<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x\" crossorigin=\"anonymous\">";
+        archivoHTML += "<link rel=\"stylesheet\" href=\"./estilos.css\">";
+        archivoHTML += "</head>";
+        //Cierra HEAD y comienza BODY
+        archivoHTML += "<body>";
+        archivoHTML += "<div class=\"container\">";
+        archivoHTML += "<div class=\"row mt-4 mb-4\" style=\"text-align: center;\">";
+        archivoHTML += "<div class=\"col-12\">";
+        archivoHTML += "<img style=\"width: auto;\" src=\"./logo.png\" alt=\"Logo de CentroImpresion\">";
+        archivoHTML += "</div>";
+        archivoHTML += "</div>";
+        archivoHTML += "<div class=\"row\">";
+        archivoHTML += "<h1 class=\"mb-4 mt-4 p-2\">Informe estadístico del TPV de CentroImpresion</h1>";
+        archivoHTML += "</div>";
+        archivoHTML += "<div class=\"row estadisticas p-2\">";
+        archivoHTML += "<h3>La compra media ha estado en: "+String.format("%.2f",(double) compraMedia/100)+"€</h3>";
+        archivoHTML += "<h3>El producto mas vendido ha sido "+productoMasVendido.getNombre()+" vendiendo un total de "+String.format("%.2f",(double) generadoConMasVendido/100)+"€</h3>";
+        archivoHTML += "<h3>La media de productos vendidos por compra ha sido de: "+mediaProductosCompra+"</h3>";
+        archivoHTML += "<h3>Han habido un total de "+cantidadCompras+" compras</h3>";
+        archivoHTML += "<h3>La compra mas grande fue de "+String.format("%.2f",(double) tiquetMasGrande.getTotalEnCent()/100)+" el dia "+UtilidadesFechas.getFechaFormateada(tiquetMasGrande.getFechaActual())+"</h3>";
+        archivoHTML += "</div>";
+        archivoHTML += "<div class=\"row\">";
+        archivoHTML += "<p class=\"mt-2\" style=\"text-align: center;\">Hecho por Rafael Niñoles Parra | Generado: "+UtilidadesFechas.getFechaYHoraFormateada(fechaActual)+"</p>";
+        archivoHTML += "</div>";
+        archivoHTML += "</div>";
+        archivoHTML += "</body>";
+        //Acaba BODY;
+        archivoHTML += "</html>";
+        File archivoACrear = new File("./informes/informe-TPV-"+
+                fechaActual.getDayOfMonth()+"-"+fechaActual.getMonthValue()+"-"+fechaActual.getYear()+
+                "_"+fechaActual.getHour()+"-"+fechaActual.getMinute()+"-"+fechaActual.getSecond()+".html");
+        //TODO revisar las excepciones
+        try(FileWriter fwHTML = new FileWriter(archivoACrear)) {
+            fwHTML.write(archivoHTML);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"Se ha generado el informe en la carpeta de informes correctamente");
+    }
+
+    private static void checkeaImagenYCSS() {
+        File imagenLogo = new File("./informes/logo.png");
+        File estilosCSS = new File("./informes/estilos.css");
+        try{
+            if (!imagenLogo.exists()){
+                File aCopiar = new File("resources/logo.png");
+                Files.copy(aCopiar.toPath(), (new File("./informes/logo.png")).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+            if (!estilosCSS.exists()){
+                File aCopiar = new File("resources/estilos.css");
+                Files.copy(aCopiar.toPath(), (new File("./informes/estilos.css")).toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"ERROR AL CREAR EL LOGO Y CSS");
+        }
+    }
+
+    private static void carpetaInformes() {
+        File carpetaInformes = new File("./informes");
+        if(!carpetaInformes.exists() || !carpetaInformes.isDirectory()){
+            carpetaInformes.mkdir();
+        }
+    }
+
+    public static void imprimeCierreCaja(){
+        String aImprimir="";
+        LocalDateTime fechaActual = LocalDateTime.now();
+        aImprimir += "Cierre del "+UtilidadesFechas.getFechaFormateada(fechaActual)+" a las "+UtilidadesFechas.getHoraFormateada(fechaActual)+"\n";
+        aImprimir += "La caja estuvo abierta de "+UtilidadesFechas.getFechaYHoraFormateada(fechaInicio)+" a "+UtilidadesFechas.getFechaYHoraFormateada(fechaActual)+"\n";
+        int totalCobradoEnCents = 0;
+        int totalPedidos = tiquetsDelDia.getTiquets().size();
+        int totalProductosVendidos = 0;
+        for (Tiquet tiquet:tiquetsDelDia.getTiquets()) {
+            totalCobradoEnCents += tiquet.getTotalEnCent();
+            totalProductosVendidos += tiquet.getCantidadProductos();
+        }
+        aImprimir+="Se han hecho "+totalPedidos+" pedidos\n";
+        aImprimir+="Se han vendido "+totalProductosVendidos+" productos\n";
+        aImprimir+="El total cobrado ha sido de "+String.format("%.2f",(double) totalCobradoEnCents/100)+"€";
+        imprimeTexto(aImprimir);
+    }
+
     public static void imprimeTicket(Tiquet tiquet){
+        imprimeTexto(tiquet.getInforme());
+    }
+    private static void imprimeTexto(String texto){
         JTextPane jtp = new JTextPane();
         jtp.setBackground(Color.white);
-        jtp.setFont(new Font("Courier New",Font.BOLD,10));
-        jtp.setText(tiquet.getInforme());
+        jtp.setFont(new Font("Courier New",Font.BOLD,8));
+        jtp.setText(texto);
         boolean show = true;
         try {
             jtp.print(null, null, show, null, null, show);
         } catch (java.awt.print.PrinterException ex) {
             ex.printStackTrace();
         }
-    }
-
-    public PanelBarraSuperior getPanelBarraSuperior() {
-        return panelBarraSuperior;
     }
 
     public JPanel getPanelProductos() {
@@ -96,7 +240,6 @@ public class TPVCopisteria {
             historicoTiquets = new HistoricoTiquets();
 
         }
-        this.panelBarraSuperior = new PanelBarraSuperior();
         this.constraintGlobal = new GridBagConstraints();
         disenyaPanelGlobal();
     }
@@ -108,11 +251,6 @@ public class TPVCopisteria {
         constraintGlobal.gridy=0;
         constraintGlobal.weightx=1;
         constraintGlobal.weighty=1;
-        constraintGlobal.gridwidth=20;
-        constraintGlobal.gridheight=2;
-        panelGlobal.add(panelBarraSuperior.getPanel(),constraintGlobal);
-        constraintGlobal.gridx=0;
-        constraintGlobal.gridy=2;
         constraintGlobal.gridwidth=15;
         constraintGlobal.gridheight=20;
         panelGlobal.add(panelProductos.getPanel(),constraintGlobal);
@@ -144,6 +282,7 @@ public class TPVCopisteria {
 
     private HashSet<Producto> leeProductos() throws IOException {
         Set<Producto> productos = new HashSet<>();
+        Path fullPath = Paths.get(".").toAbsolutePath();
         List<String> lineasCsv = Files.readAllLines(Paths.get("resources/productos.csv"));
         for (String linea:lineasCsv) {
             String[] separadoPorComas = linea.split(",");

@@ -86,6 +86,7 @@ public class VentanaCobrar {
         //TODO
         Tiquet tiquetActual = new Tiquet(panelListaCompra.getListaCompra());
         TPVCopisteria.anyadeTiquetAHistorico(tiquetActual);
+        TPVCopisteria.anyadeTiquetDia(tiquetActual);
         return tiquetActual;
     }
 
