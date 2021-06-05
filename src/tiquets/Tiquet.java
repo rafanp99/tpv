@@ -59,6 +59,14 @@ public class Tiquet implements Serializable {
 
     public String getInforme() {
         String salida="";
+        salida+=getFechaFormateada()+"\n";
+        for (ProductoEnTiquet productoEnTiquet:productos) {
+            salida+=productoEnTiquet.getProducto().getNombre();
+            salida+="\tCantidad:"+productoEnTiquet.getCantidad();
+            salida+="\tPrecio unitario:"+productoEnTiquet.getProducto().getPrecioDecimal();
+            salida+="\tSUBTOTAL:"+String.format("%.2f",(double) productoEnTiquet.getCantidad()*(productoEnTiquet.getProducto().getPrecioCentimos()/100))+"\n";
+        }
+        salida+="TOTAL: "+String.format("%.2f",(double)totalEnCent/100)+"€";
         return salida;
     }
 }

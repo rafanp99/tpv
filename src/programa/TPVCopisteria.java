@@ -47,7 +47,7 @@ public class TPVCopisteria {
     public static void imprimeTicket(Tiquet tiquet){
         JTextPane jtp = new JTextPane();
         jtp.setBackground(Color.white);
-        jtp.setFont(new Font("Courier New",Font.BOLD,16));
+        jtp.setFont(new Font("Courier New",Font.BOLD,10));
         jtp.setText(tiquet.getInforme());
         boolean show = true;
         try {
