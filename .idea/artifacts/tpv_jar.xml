@@ -3,7 +3,8 @@
     <output-path>$PROJECT_DIR$/out/artifacts/tpv_jar</output-path>
     <root id="archive" name="tpv.jar">
       <element id="module-output" name="tpv" />
-      <element id="dir-copy" path="$PROJECT_DIR$/resources" />
+      <element id="dir-copy" path="$PROJECT_DIR$/imagenesProductos" />
+      <element id="file-copy" path="$PROJECT_DIR$/productos.csv" />
     </root>
   </artifact>
 </component>

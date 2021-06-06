@@ -1,11 +1,15 @@
 package paneles;
 
-import logger.LogFactory;
+import logger.TPVLogger;
 import productos.Producto;
 import utilidades.estilos.UtilidadesEstilos;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 /**
@@ -14,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class BotonProducto {
     private final PanelProductos panelProductos;
-    private static final Logger LOGGER = LogFactory.getLogger();
+    private static final Logger LOGGER = TPVLogger.getLogger();
     private final JButton boton;
     private final Producto producto;
 
@@ -41,9 +45,11 @@ public class BotonProducto {
 
     private void disenyaBoton() {
         try {
-            ImageIcon imagen = new ImageIcon("resources/"+producto.getUriImagen());
+            InputStream contenidoImg = new FileInputStream("./imagenesProductos/"+producto.getUriImagen());
+            ImageIcon imagen = new ImageIcon(ImageIO.read(contenidoImg));
             boton.setIcon(imagen);
             boton.setText("");
+            boton.setForeground(Color.BLACK);
         } catch (Exception e) {
             e.printStackTrace();
             UtilidadesEstilos.botonAzul(boton);

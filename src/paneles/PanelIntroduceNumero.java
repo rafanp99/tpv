@@ -2,7 +2,7 @@ package paneles;
 
 import programa.TPVCopisteria;
 import utilidades.estilos.UtilidadesEstilos;
-import logger.LogFactory;
+import logger.TPVLogger;
 
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * @author Rafael Niñoles Parra
  */
 public class PanelIntroduceNumero {
-    private final Logger LOGGER = LogFactory.getLogger();
+    private final Logger LOGGER = TPVLogger.getLogger();
     private final PanelAnyadeProducto panelAnyadeProducto;
     private final JPanel panel;
     private final JButton botonMenos;

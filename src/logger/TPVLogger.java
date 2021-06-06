@@ -9,27 +9,34 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 /**
- * Patron de diseño factory para el Logger
+ * Clase destinada a la obtencion y creacion del logger
  * @author Rafael Niñoles Parra
  */
-public class LogFactory {
-	// Patrónn Factory Method
+public class TPVLogger {
 
-	/**
-	 * Devuelve un Logger usando el patron factory
-	 * @return El Logger
-	 */
+	private static Logger logger = null;
+	private final static String NOMBRE_FICHERO = "logging.txt";
+	// Patron Factory Method
 	public static Logger getLogger() {
+		if (logger!=null){
+			return logger;
+		}
+		// Eliminamos la configuraci�n del log ra�z
+		Logger rootLogger = Logger.getLogger("");
+		Handler[] handlers = rootLogger.getHandlers();
+		if (handlers.length>0 && handlers[0] instanceof ConsoleHandler) {
+			rootLogger.removeHandler(handlers[0]);
+		}
+
 		// Creamos el nuevo Logger con todos los niveles para consola y fichero
-		Logger result = Logger.getLogger("logging.txt");
+		Logger result = Logger.getLogger(NOMBRE_FICHERO);
 
 		Handler consoleHandler = new ConsoleHandler();
 		consoleHandler.setLevel(Level.ALL);
 
 		Handler fileTxt = null;
 		try {
-			fileTxt = new FileHandler("logging.txt");
-
+			fileTxt = new FileHandler(NOMBRE_FICHERO,true);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileTxt.setFormatter(simpleFormatter);
 			fileTxt.setLevel(Level.INFO);
@@ -41,6 +48,7 @@ public class LogFactory {
 		result.addHandler(fileTxt);
 		result.setLevel(Level.FINE);
 
+		logger = result;
 		return result;
 	}
 

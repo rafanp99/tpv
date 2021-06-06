@@ -1,6 +1,6 @@
 package paneles;
 
-import logger.LogFactory;
+import logger.TPVLogger;
 import productos.Producto;
 import programa.TPVCopisteria;
 import utilidades.estilos.UtilidadesEstilos;
@@ -14,7 +14,7 @@ import java.util.logging.Logger;
  * @author Rafael Niñoles Parra
  */
 public class PanelLateral {
-    private static final Logger LOGGER = LogFactory.getLogger();
+    private static final Logger LOGGER = TPVLogger.getLogger();
     private final JPanel panel;
     private final PanelAnyadeProducto panelAnyadeProducto;
     private final PanelListaCompra panelListaCompra;

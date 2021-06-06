@@ -1,6 +1,6 @@
 package paneles;
 
-import logger.LogFactory;
+import logger.TPVLogger;
 import productos.Producto;
 
 import javax.swing.*;
@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * @author Rafael Niñoles Parra
  */
 public class PanelAnyadeProducto {
-    private static final Logger LOGGER = LogFactory.getLogger();
+    private static final Logger LOGGER = TPVLogger.getLogger();
     private final JPanel panel;
     private final PanelLateral panelLateral;
     private final JLabel labelProducto;

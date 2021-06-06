@@ -1,6 +1,6 @@
 package programa;
 
-import logger.LogFactory;
+import logger.TPVLogger;
 import paneles.PanelLateral;
 import paneles.PanelProductos;
 import productos.CategoriaProducto;
@@ -13,9 +13,9 @@ import utilidades.fechas.UtilidadesFechas;
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  * @author Rafael Niñoles Parra
  */
 public class TPVCopisteria {
-    private static final Logger LOGGER = LogFactory.getLogger();
+    private static final Logger LOGGER = TPVLogger.getLogger();
     public static final JFrame FRAME = new JFrame();
     private static HistoricoTiquets historicoTiquets;
     private static final HistoricoTiquets tiquetsDelDia = new HistoricoTiquets();
@@ -54,7 +54,7 @@ public class TPVCopisteria {
      * Guarda el historico de tiquets
      */
     public static void guardaHistorico() {
-        try(ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(new File("resources/historico.tiquets")))){
+        try(ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(new File("./historico.tiquets")))){
             oos.writeObject(historicoTiquets);
         }catch (IOException ioe){
             ioe.printStackTrace();
@@ -67,7 +67,6 @@ public class TPVCopisteria {
     public static void generaEstadisticasTPV(){
         //TODO REVISAR EN JAR
         carpetaInformes();
-        checkeaImagenYCSS();
         LocalDateTime fechaActual = LocalDateTime.now();
         Tiquet tiquetMasGrande = historicoTiquets.getTiquets().get(0);
         int totalProductosComprados = 0;
@@ -147,36 +146,18 @@ public class TPVCopisteria {
         archivoHTML += "</body>";
         //Acaba BODY;
         archivoHTML += "</html>";
+        //TODO revisar las excepciones
         File archivoACrear = new File("./informes/informe-TPV-"+
                 fechaActual.getDayOfMonth()+"-"+fechaActual.getMonthValue()+"-"+fechaActual.getYear()+
                 "_"+fechaActual.getHour()+"-"+fechaActual.getMinute()+"-"+fechaActual.getSecond()+".html");
-        //TODO revisar las excepciones
-        try(FileWriter fwHTML = new FileWriter(archivoACrear)) {
-            fwHTML.write(archivoHTML);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"Se ha generado el informe en la carpeta de informes correctamente");
-    }
-
-    /**
-     * Checkea si existe el logo y el archivo css en la carpeta de informes para la correcta visualizacion del HTML. Si no existe los crea
-     */
-    private static void checkeaImagenYCSS() {
-        File imagenLogo = new File("./informes/logo.png");
-        File estilosCSS = new File("./informes/estilos.css");
-        try{
-            if (!imagenLogo.exists()){
-                File aCopiar = new File("resources/logo.png");
-                Files.copy(aCopiar.toPath(), (new File("./informes/logo.png")).toPath(), StandardCopyOption.REPLACE_EXISTING);
-            }
-            if (!estilosCSS.exists()){
-                File aCopiar = new File("resources/estilos.css");
-                Files.copy(aCopiar.toPath(), (new File("./informes/estilos.css")).toPath(), StandardCopyOption.REPLACE_EXISTING);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"ERROR AL CREAR EL LOGO Y CSS");
+        try (OutputStreamWriter writer =
+                     new OutputStreamWriter(new FileOutputStream(archivoACrear), StandardCharsets.UTF_8)) {
+            writer.write(archivoHTML);
+            JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"Se ha generado el informe en la carpeta de informes correctamente");
+        } catch (IOException exception) {
+            exception.printStackTrace();
+            JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"Error al crear el informe");
+            LOGGER.severe("Error al crear un informe, no se ha podido escribir");
         }
     }
 
@@ -264,11 +245,8 @@ public class TPVCopisteria {
             LOGGER.severe("No se ha podido leer el csv de productos");
             throw ioe;
         }
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("resources/historico.tiquets"))){
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./historico.tiquets"))){
             historicoTiquets = (HistoricoTiquets) ois.readObject();
-            for (Tiquet tiquet: historicoTiquets.getTiquets()) {
-                System.out.println(tiquet.getCantidadProductos()+" "+tiquet.getTotalEnCent()+"centimos "+tiquet.getFechaFormateada());
-            }
         } catch (ClassNotFoundException | EOFException e) {
             e.printStackTrace();
             historicoTiquets = new HistoricoTiquets();
@@ -328,7 +306,7 @@ public class TPVCopisteria {
         int columnaPrecioCent=1;
         int columnaUriImagen=2;
         int columnaCategorias=3;
-        List<String> lineasCsv = Files.readAllLines(Paths.get("resources/productos.csv"));
+        List<String> lineasCsv = Files.readAllLines(Paths.get("./productos.csv"));
         for (String linea:lineasCsv) {
             String[] separadoPorComas = linea.split(",");
             String nombre = separadoPorComas[columnaNombre];

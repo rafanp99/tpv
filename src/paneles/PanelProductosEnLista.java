@@ -1,6 +1,6 @@
 package paneles;
 
-import logger.LogFactory;
+import logger.TPVLogger;
 import productos.Producto;
 import productos.ProductoEnTiquet;
 import utilidades.estilos.UtilidadesEstilos;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author Rafael Niñoles Parra
  */
 public class PanelProductosEnLista {
-    private final static Logger LOGGER = LogFactory.getLogger();
+    private final static Logger LOGGER = TPVLogger.getLogger();
     private final JPanel panel;
     private final ProductoEnTiquet productoEnTiquet;
     private final JButton botonEliminar;

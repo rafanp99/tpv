@@ -1,10 +1,13 @@
 package paneles;
 
-import logger.LogFactory;
+import logger.TPVLogger;
 import utilidades.estilos.UtilidadesEstilos;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.plaf.BorderUIResource;
+import java.awt.*;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 /**
@@ -12,7 +15,7 @@ import java.util.logging.Logger;
  * @author Rafael Niñoles Parra
  */
 public class BotonMoneda {
-    private final static Logger LOGGER = LogFactory.getLogger();
+    private final static Logger LOGGER = TPVLogger.getLogger();
     private final JButton boton;
     private final VentanaCobrar ventanaCobrar;
     private final int valor;
@@ -40,9 +43,11 @@ public class BotonMoneda {
 
     private void disenyaBoton() {
         try {
-            ImageIcon imagen = new ImageIcon("resources/"+valor+"moneda.jpg");
+            InputStream contenidoImg = BotonProducto.class.getResourceAsStream("/"+valor+"moneda.jpg");
+            ImageIcon imagen = new ImageIcon(ImageIO.read(contenidoImg));
             boton.setIcon(imagen);
             boton.setText("");
+            boton.setForeground(Color.BLACK);
         } catch (Exception e) {
             e.printStackTrace();
             UtilidadesEstilos.botonAzul(boton);

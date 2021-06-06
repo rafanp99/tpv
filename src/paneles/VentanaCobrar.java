@@ -59,6 +59,7 @@ public class VentanaCobrar {
         rellenaVentana();
         this.ventana.add(panel);
         this.ventana.pack();
+        this.ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         this.ventana.setLocationRelativeTo(null);
         this.ventana.setVisible(false);
     }

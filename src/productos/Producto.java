@@ -1,6 +1,6 @@
 package productos;
 
-import logger.LogFactory;
+import logger.TPVLogger;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * @author Rafael Niñoles Parra
  */
 public class Producto implements Serializable {
-    private static final Logger LOGGER = LogFactory.getLogger();
+    private static final Logger LOGGER = TPVLogger.getLogger();
     private final String nombre;
     private final int precioCentimos;
     private final String uriImagen;
