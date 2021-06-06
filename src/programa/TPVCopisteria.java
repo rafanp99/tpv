@@ -14,7 +14,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
@@ -22,6 +21,10 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.Logger;
 
+/**
+ * Clase que lanzara la ejecucion del TPV
+ * @author Rafael Niñoles Parra
+ */
 public class TPVCopisteria {
     private static final Logger LOGGER = LogFactory.getLogger();
     public static final JFrame FRAME = new JFrame();
@@ -39,10 +42,17 @@ public class TPVCopisteria {
     private final JPanel panelGlobal;
     private final GridBagConstraints constraintGlobal;
 
+    /**
+     * Devuelve el panel global que compone todo el TPV
+     * @return panel global que compone todo el TPV
+     */
     public JPanel getPanelGlobal() {
         return panelGlobal;
     }
 
+    /**
+     * Guarda el historico de tiquets
+     */
     public static void guardaHistorico() {
         try(ObjectOutputStream oos=new ObjectOutputStream(new FileOutputStream(new File("resources/historico.tiquets")))){
             oos.writeObject(historicoTiquets);
@@ -51,6 +61,9 @@ public class TPVCopisteria {
         }
     }
 
+    /**
+     * Genera un fichero HTML en la carpeta informes, en el que informa del rendimiento del TPV basandose en el historico de tiquets
+     */
     public static void generaEstadisticasTPV(){
         //TODO REVISAR EN JAR
         carpetaInformes();
@@ -125,7 +138,7 @@ public class TPVCopisteria {
         archivoHTML += "<h3>El producto mas vendido ha sido "+productoMasVendido.getNombre()+" vendiendo un total de "+String.format("%.2f",(double) generadoConMasVendido/100)+"€</h3>";
         archivoHTML += "<h3>La media de productos vendidos por compra ha sido de: "+mediaProductosCompra+"</h3>";
         archivoHTML += "<h3>Han habido un total de "+cantidadCompras+" compras</h3>";
-        archivoHTML += "<h3>La compra mas grande fue de "+String.format("%.2f",(double) tiquetMasGrande.getTotalEnCent()/100)+" el dia "+UtilidadesFechas.getFechaFormateada(tiquetMasGrande.getFechaActual())+"</h3>";
+        archivoHTML += "<h3>La compra mas grande fue de "+String.format("%.2f",(double) tiquetMasGrande.getTotalEnCent()/100)+"€ el dia "+UtilidadesFechas.getFechaFormateada(tiquetMasGrande.getFechaActual())+"</h3>";
         archivoHTML += "</div>";
         archivoHTML += "<div class=\"row\">";
         archivoHTML += "<p class=\"mt-2\" style=\"text-align: center;\">Hecho por Rafael Niñoles Parra | Generado: "+UtilidadesFechas.getFechaYHoraFormateada(fechaActual)+"</p>";
@@ -146,6 +159,9 @@ public class TPVCopisteria {
         JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"Se ha generado el informe en la carpeta de informes correctamente");
     }
 
+    /**
+     * Checkea si existe el logo y el archivo css en la carpeta de informes para la correcta visualizacion del HTML. Si no existe los crea
+     */
     private static void checkeaImagenYCSS() {
         File imagenLogo = new File("./informes/logo.png");
         File estilosCSS = new File("./informes/estilos.css");
@@ -164,6 +180,9 @@ public class TPVCopisteria {
         }
     }
 
+    /**
+     * Checkea si existe la carpeta de informes, si no existe la crea
+     */
     private static void carpetaInformes() {
         File carpetaInformes = new File("./informes");
         if(!carpetaInformes.exists() || !carpetaInformes.isDirectory()){
@@ -171,6 +190,9 @@ public class TPVCopisteria {
         }
     }
 
+    /**
+     * Imprime el cierre de la caja actual
+     */
     public static void imprimeCierreCaja(){
         String aImprimir="";
         LocalDateTime fechaActual = LocalDateTime.now();
@@ -189,30 +211,50 @@ public class TPVCopisteria {
         imprimeTexto(aImprimir);
     }
 
+    /**
+     * Imprime un tiquet
+     * @param tiquet Tiquet que se quiere imprimir
+     */
     public static void imprimeTicket(Tiquet tiquet){
         imprimeTexto(tiquet.getInforme());
     }
+
+    /**
+     * Imprime un texto
+     * @param texto Texto que desea imprimir
+     */
     private static void imprimeTexto(String texto){
         JTextPane jtp = new JTextPane();
         jtp.setBackground(Color.white);
         jtp.setFont(new Font("Courier New",Font.BOLD,8));
         jtp.setText(texto);
-        boolean show = true;
         try {
-            jtp.print(null, null, show, null, null, show);
+            jtp.print(null, null, true, null, null, true);
         } catch (java.awt.print.PrinterException ex) {
             ex.printStackTrace();
         }
     }
 
+    /**
+     * Devuelve el JPanel del panel de productos
+     * @return JPanel del panel de productos
+     */
     public JPanel getPanelProductos() {
         return panelProductos.getPanel();
     }
 
+    /**
+     * Devuelve el JPanel del panel lateral
+     * @return JPanel del panel lateral
+     */
     public JPanel getPanelLateral() {
         return panelLateral.getPanel();
     }
 
+    /**
+     * Crea un TPV completo
+     * @throws IOException excepcion si no se pueden leer los productos
+     */
     public TPVCopisteria() throws IOException {
         this.panelGlobal = new JPanel(new GridBagLayout());
         panelLateral = new PanelLateral(this);
@@ -270,33 +312,36 @@ public class TPVCopisteria {
     public static void main(String[] args) throws IOException{
         TPVCopisteria tpvCopisteria = new TPVCopisteria();
         //intentaDisenyoBonito();
-        tpvCopisteria.FRAME.add(tpvCopisteria.getPanelGlobal());
-        tpvCopisteria.FRAME.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        tpvCopisteria.FRAME.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        FRAME.add(tpvCopisteria.getPanelGlobal());
+        FRAME.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        FRAME.setExtendedState(JFrame.MAXIMIZED_BOTH);
         //Quitado de pantalla completa porque para el jdialog del cobro no me deja si esta undecorated
         //tpvCopisteria.FRAME.setUndecorated(true);
-        tpvCopisteria.FRAME.pack();
-        tpvCopisteria.FRAME.setVisible(true);
-        tpvCopisteria.FRAME.setLocationRelativeTo(null);
+        FRAME.pack();
+        FRAME.setVisible(true);
+        FRAME.setLocationRelativeTo(null);
     }
 
     private HashSet<Producto> leeProductos() throws IOException {
-        Set<Producto> productos = new HashSet<>();
-        Path fullPath = Paths.get(".").toAbsolutePath();
+        HashSet<Producto> productos = new HashSet<>();
+        int columnaNombre=0;
+        int columnaPrecioCent=1;
+        int columnaUriImagen=2;
+        int columnaCategorias=3;
         List<String> lineasCsv = Files.readAllLines(Paths.get("resources/productos.csv"));
         for (String linea:lineasCsv) {
             String[] separadoPorComas = linea.split(",");
-            String nombre = separadoPorComas[0];
-            int precioEnCent = Integer.parseInt(separadoPorComas[1]);
-            String uriImagen = separadoPorComas[2];
+            String nombre = separadoPorComas[columnaNombre];
+            int precioEnCent = Integer.parseInt(separadoPorComas[columnaPrecioCent]);
+            String uriImagen = separadoPorComas[columnaUriImagen];
             Set<CategoriaProducto> categoriasProducto = new HashSet<>();
-            String[] categoriasEnTexto = separadoPorComas[3].split(":");
+            String[] categoriasEnTexto = separadoPorComas[columnaCategorias].split(":");
             for (String categoriaEnTexto:categoriasEnTexto) {
                 categoriasProducto.add(CategoriaProducto.valueOf(categoriaEnTexto));
             }
             Producto producto = new Producto(nombre,precioEnCent,uriImagen,categoriasProducto);
             productos.add(producto);
         }
-        return (HashSet<Producto>) productos;
+        return productos;
     }
 }

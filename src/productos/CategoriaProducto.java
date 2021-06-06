@@ -15,28 +15,46 @@ public enum CategoriaProducto implements Serializable {
     OTROS("Otros");
 
     private final String nombre;
-    private byte prioridad;
+    private final byte prioridad;
 
-    CategoriaProducto(String nombre, byte prioridad) {
-        this.nombre = nombre;
-        this.prioridad = prioridad;
-    }
 
-    CategoriaProducto(String nombre){
-        this(nombre,(byte) 100);
-    }
-
+    /**
+     * Devuelve el nombre de la categoria bien escrito
+     * @return nombre de la categoria bien escrito
+     */
     public String getNombre() {
         return nombre;
     }
 
+    /**
+     * Devuelve la prioridad de la categoria
+     * @return prioridad de la categoria
+     */
     public byte getPrioridad() {
         return prioridad;
     }
 
     /**
-     * Devuelve el nombre de la categoria
-     * @return nombre de la categoria
+     * Crea una nueva categoria de produto
+     * @param nombre nombre de la categoria
+     * @param prioridad prioridad de la categoria
+     */
+    CategoriaProducto(String nombre, byte prioridad) {
+        this.nombre = nombre;
+        this.prioridad = prioridad;
+    }
+
+    /**
+     * Crea una nueva categoria con la prioridad por defecto
+     * @param nombre nombre de la categoria
+     */
+    CategoriaProducto(String nombre){
+        this(nombre,(byte) 100);
+    }
+
+    /**
+     * Devuelve el nombre de la categoria bien escrita
+     * @return nombre de la categoria bien escrita
      */
     @Override
     public String toString() {

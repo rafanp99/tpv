@@ -1,12 +1,19 @@
 package utilidades.estilos;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.plaf.BorderUIResource;
 import java.awt.*;
 
+/**
+ * Clase auxiliar de utilidades para dar estilo a elementos de swing
+ * @author Rafael Niñoles Parra
+ */
 public final class UtilidadesEstilos {
     private UtilidadesEstilos(){ }
+
+    /**
+     * Aplica estilos a un JButton para que tenga apariencia azul
+     * @param boton JButton al que deseas aplicarle los estilos
+     */
     public static void botonAzul(JButton boton){
         boton.setForeground(Color.white);
         //Opaque y border painted solo para que en linux se vean los colores
@@ -17,6 +24,11 @@ public final class UtilidadesEstilos {
         boton.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         boton.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
     }
+
+    /**
+     * Aplica estilos a un JButton para que tenga apariencia azul clara
+     * @param boton JButton al que deseas aplicarle los estilos
+     */
     public static void botonAzulClaro(JButton boton){
         boton.setForeground(Color.white);
         //Opaque y border painted solo para que en linux se vean los colores
@@ -27,6 +39,11 @@ public final class UtilidadesEstilos {
         boton.setBorder(BorderFactory.createEmptyBorder(10,10,10,10));
         boton.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
     }
+
+    /**
+     * Aplica estilos a un JButton para que tenga apariencia de boton para cerrar (rojo)
+     * @param boton JButton al que deseas aplicarle los estilos
+     */
     public static void botonCerrar(JButton boton){
         boton.setForeground(Color.WHITE);
         boton.setOpaque(true);

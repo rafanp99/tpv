@@ -1,6 +1,5 @@
 package paneles;
 
-import jdk.nashorn.internal.scripts.JD;
 import programa.TPVCopisteria;
 import tiquets.Tiquet;
 import utilidades.estilos.UtilidadesEstilos;
@@ -10,6 +9,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase que la ventana del cobro de un pedido
+ * @author Rafael Niñoles Parra
+ */
 public class VentanaCobrar {
     private final int columnas;
     private final JDialog ventana;
@@ -27,6 +30,10 @@ public class VentanaCobrar {
     private int entregado;
     private int cambio;
 
+    /**
+     * Crea una ventana para realizar un cobro
+     * @param panelListaCompra lista de la compra de la cual se va a cobrar
+     */
     public VentanaCobrar(PanelListaCompra panelListaCompra) {
         this.panel = new JPanel(new GridBagLayout());
         this.panel.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
@@ -56,6 +63,44 @@ public class VentanaCobrar {
         this.ventana.setVisible(false);
     }
 
+    /**
+     * Abre la ventana del cobro
+     */
+    public void abrir(){
+        if(panelListaCompra.getTotalEnCentimos()==0){
+            JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"No hay nada que cobrar");
+            return;
+        }
+        this.ventana.setVisible(true);
+    }
+
+    /**
+     * Cierra la ventana del cobro
+     */
+    public void cerrar(){
+        this.ventana.setVisible(false);
+    }
+
+    /**
+     * Añade cantidad de centimos entregda
+     * @param valor centimos a añadir a lo ya entregado
+     */
+    public void anyade(int valor) {
+        entregado+=valor;
+        cambio+=valor;
+        actualizaLabels();
+    }
+
+    /**
+     * Reinicia todo el cobro
+     */
+    public void reiniciaCobro() {
+        aCobrar = panelListaCompra.getTotalEnCentimos();
+        cambio = aCobrar*-1;
+        entregado = 0;
+        actualizaLabels();
+    }
+
     private void configuraLabelsInicio() {
         this.labelCambio.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
         this.labelACobrar.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
@@ -83,7 +128,6 @@ public class VentanaCobrar {
     }
 
     private Tiquet creaTiquet() {
-        //TODO
         Tiquet tiquetActual = new Tiquet(panelListaCompra.getListaCompra());
         TPVCopisteria.anyadeTiquetAHistorico(tiquetActual);
         TPVCopisteria.anyadeTiquetDia(tiquetActual);
@@ -173,26 +217,4 @@ public class VentanaCobrar {
         panel.add(botonBorrar,constraints);
     }
 
-    public void abrir(){
-        if(panelListaCompra.getTotalEnCentimos()==0){
-            JOptionPane.showMessageDialog(TPVCopisteria.FRAME,"No hay nada que cobrar");
-            return;
-        }
-        this.ventana.setVisible(true);
-    }
-    public void cerrar(){
-        this.ventana.setVisible(false);
-    }
-    public void anyade(int valor) {
-        entregado+=valor;
-        cambio+=valor;
-        actualizaLabels();
-    }
-
-    public void reiniciaCobro() {
-        aCobrar = panelListaCompra.getTotalEnCentimos();
-        cambio = aCobrar*-1;
-        entregado = 0;
-        actualizaLabels();
-    }
 }

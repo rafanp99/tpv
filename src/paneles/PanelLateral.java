@@ -7,10 +7,12 @@ import utilidades.estilos.UtilidadesEstilos;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.logging.Logger;
 
+/**
+ * Clase que representa el panel lateral completo del TPV
+ * @author Rafael Niñoles Parra
+ */
 public class PanelLateral {
     private static final Logger LOGGER = LogFactory.getLogger();
     private final JPanel panel;
@@ -23,24 +25,26 @@ public class PanelLateral {
     private final JButton botonCierreCaja;
     private final JButton botonExportarEstadisticas;
 
-    public void seleccionaProducto(Producto producto){
-        panelAnyadeProducto.cambiaProducto(producto);
-        panelAnyadeProducto.reiniciaCantidad();
-    }
-
+    /**
+     * Devuelve el panel lateral completo
+     * @return panel lateral completo
+     */
     public JPanel getPanel() {
         return panel;
     }
 
+    /**
+     * Deuelve el panel del boton de pagar
+     * @return Panel de boton de pagar
+     */
     public PanelBotonPagar getPanelBotonPagar() {
         return panelBotonPagar;
     }
 
-    public void anyadeProductoALista(Producto producto, int cantidad){
-        panelListaCompra.anyadeProducto(producto,cantidad);
-        panelBotonPagar.anyadePrecio(producto.getPrecioCentimos() * cantidad);
-    }
-
+    /**
+     * Crea un panel lateral completo
+     * @param programaPrincipal Programa principal
+     */
     public PanelLateral(TPVCopisteria programaPrincipal){
         this.constraint = new GridBagConstraints();
         this.programaPrincipal = programaPrincipal;
@@ -75,17 +79,35 @@ public class PanelLateral {
         this.panel.add(panelBotonPagar.getPanel(),constraint);
     }
 
-    private void anyadeListenersBotones() {
-        botonCierreCaja.addActionListener(e->{
-            TPVCopisteria.imprimeCierreCaja();
-        });
-        botonExportarEstadisticas.addActionListener(e->{
-            TPVCopisteria.generaEstadisticasTPV();
-        });
-    }
-
+    /**
+     * Finaliza la compra actual
+     */
     public void finalizaCompra() {
         ventanaCobrar.reiniciaCobro();
         ventanaCobrar.abrir();
+    }
+
+    /**
+     * Selecciona un nuevo producto
+     * @param producto producto nuevo seleccionado
+     */
+    public void seleccionaProducto(Producto producto){
+        panelAnyadeProducto.cambiaProducto(producto);
+        panelAnyadeProducto.reiniciaCantidad();
+    }
+
+    /**
+     * Añade un nuevo producto a la lista de la compra
+     * @param producto Producto a añadir
+     * @param cantidad Cantidad de veces que se compra el producto
+     */
+    public void anyadeProductoALista(Producto producto, int cantidad){
+        panelListaCompra.anyadeProducto(producto,cantidad);
+        panelBotonPagar.anyadePrecio(producto.getPrecioCentimos() * cantidad);
+    }
+
+    private void anyadeListenersBotones() {
+        botonCierreCaja.addActionListener(e-> TPVCopisteria.imprimeCierreCaja());
+        botonExportarEstadisticas.addActionListener(e-> TPVCopisteria.generaEstadisticasTPV());
     }
 }

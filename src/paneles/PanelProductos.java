@@ -11,6 +11,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+/**
+ * Clase que representa un panel que incluye pestañas con productos filtrados por categorias
+ * @author Rafael Niñoles Parra
+ */
 public class PanelProductos {
     private final JPanel panel;
     public final TreeMap<CategoriaProducto,HashSet<Producto>> produtosPorCategoria;
@@ -18,10 +22,18 @@ public class PanelProductos {
     private final PanelLateral panelLateral;
     private final int cantidadColumas = 6;
 
+    /**
+     * Devuelve el la instancia del panel lateral
+     * @return instancia del panel lateral
+     */
     public PanelLateral getPanelLateral(){
         return panelLateral;
     }
 
+    /**
+     * Devuelve el JPanel completo
+     * @return el JPanel completo
+     */
     public JPanel getPanel() {
         return panel;
     }
@@ -76,12 +88,12 @@ public class PanelProductos {
         pestanyas.addTab("TODOS",null,pestanyaTodosProductos);
         panel.add(pestanyas);
     }
+
     private Vector2 calculaPosicionBoton(int posicion){
         int fila = posicion/cantidadColumas;
         int columna = posicion%cantidadColumas;
         return new Vector2(columna,fila);
     }
-
 
     private void rellenaProductosPorCategorias(HashSet<Producto> productos) {
         for (Producto producto:productos) {
@@ -98,18 +110,5 @@ public class PanelProductos {
             }
         }
     }
-
-    // TODO Eliminar este comentario cuando finalice
-    /*
-    public static void main(String[] args) throws IOException {
-        PanelProductos panelProductos = new PanelProductos(TPVCopisteria.leeProductos());
-        for (Map.Entry<CategoriaProducto,HashSet<Producto>> entrada:panelProductos.produtosPorCategoria.entrySet()){
-            System.out.println("Categoria: "+entrada.getKey());
-            System.out.println("===============================");
-            for (Producto producto:entrada.getValue()) {
-                System.out.println("  -  "+producto.getNombre());
-            }
-        }
-    }*/
 
 }
