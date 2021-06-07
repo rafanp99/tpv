@@ -58,6 +58,8 @@ public class TPVCopisteria {
             oos.writeObject(historicoTiquets);
         }catch (IOException ioe){
             ioe.printStackTrace();
+            JOptionPane.showMessageDialog(FRAME,"Ha habido un error muy grave al guardar el historico de tiquets");
+            LOGGER.severe("Ha habido un error muy grave al guardar el historico de tiquets");
         }
     }
 

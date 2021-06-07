@@ -49,7 +49,6 @@ public class PanelProductos {
     }
 
     private void creaPestanyas() {
-        // TODO Revisar y limpiar este metodo
         Set<Producto> todosLosProductos = new HashSet<>();
         JPanel pestanyaTodosProductos=new JPanel(new GridLayout(5,cantidadColumas));
         int posicionTodos=0;
