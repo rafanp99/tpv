@@ -49,10 +49,10 @@ public class BotonProducto {
             ImageIcon imagen = new ImageIcon(ImageIO.read(contenidoImg));
             boton.setIcon(imagen);
             boton.setText("");
-            boton.setForeground(Color.BLACK);
         } catch (Exception e) {
             e.printStackTrace();
             UtilidadesEstilos.botonAzul(boton);
+            boton.setForeground(Color.BLACK);
             LOGGER.warning("No se ha encontrado la imagen del producto "+producto.getNombre());
         }
         boton.setBackground(new Color(241, 250, 238));
