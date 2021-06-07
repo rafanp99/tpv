@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="tpvLinux">
+    <output-path>$PROJECT_DIR$/out/artifacts/tpvLinux</output-path>
+    <root id="archive" name="tpvLinux.jar">
+      <element id="module-output" name="tpv" />
+      <element id="dir-copy" path="$PROJECT_DIR$/Ejecutable/imagenesProductos" />
+      <element id="file-copy" path="$PROJECT_DIR$/productos.csv" />
+    </root>
+  </artifact>
+</component>
