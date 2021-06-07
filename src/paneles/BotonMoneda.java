@@ -47,7 +47,6 @@ public class BotonMoneda {
             ImageIcon imagen = new ImageIcon(ImageIO.read(contenidoImg));
             boton.setIcon(imagen);
             boton.setText("");
-            boton.setForeground(Color.BLACK);
         } catch (Exception e) {
             e.printStackTrace();
             UtilidadesEstilos.botonAzul(boton);
