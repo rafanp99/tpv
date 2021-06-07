@@ -38,7 +38,7 @@ public class PanelProductosEnLista {
         this.labelNombre = new JLabel("");
         this.labelNombre.setHorizontalAlignment(SwingConstants.LEFT);
         this.labelNombre.setForeground(Color.BLACK);
-        this.labelNombre.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,22));
+        this.labelNombre.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,12));
         actualizaLabelNombre();
         this.botonEliminar.addActionListener(e-> panelListaCompra.eliminaProducto(this));
         this.panel = new JPanel(new GridBagLayout());

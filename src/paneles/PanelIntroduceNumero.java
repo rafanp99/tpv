@@ -56,7 +56,7 @@ public class PanelIntroduceNumero {
         panel.add(botonMenos);
         this.campoCantidad = new JTextField("1");
         campoCantidad.setHorizontalAlignment(SwingConstants.CENTER);
-        campoCantidad.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,32));
+        campoCantidad.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,12));
         campoCantidad.setColumns(5);
         campoCantidad.setBorder(BorderUIResource.getBlackLineBorderUIResource());
         panel.add(campoCantidad);
