@@ -20,7 +20,7 @@ public class PanelProductos {
     public final TreeMap<CategoriaProducto,HashSet<Producto>> produtosPorCategoria;
     private final JTabbedPane pestanyas;
     private final PanelLateral panelLateral;
-    private final int cantidadColumas = 6;
+    private final int cantidadColumas = 4;
 
     /**
      * Devuelve el la instancia del panel lateral
