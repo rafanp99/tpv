@@ -17,7 +17,7 @@ public class Producto implements Serializable {
     private final String nombre;
     private final int precioCentimos;
     private final String uriImagen;
-    private final Set<CategoriaProducto> categorias;
+    private final Set<String> categorias;
 
     /**
      * Crea un nuevo producto
@@ -26,7 +26,7 @@ public class Producto implements Serializable {
      * @param uriImagen Uri de la imagen del producto
      * @param categoria Categoria del producto
      */
-    public Producto(String nombre, int precioCentimos, String uriImagen, CategoriaProducto categoria) {
+    public Producto(String nombre, int precioCentimos, String uriImagen, String categoria) {
         this.nombre = nombre;
         this.precioCentimos = precioCentimos;
         this.uriImagen = uriImagen;
@@ -41,21 +41,11 @@ public class Producto implements Serializable {
      * @param uriImagen Uri de la imagen del producto
      * @param categorias Conjunto de categorias del producto
      */
-    public Producto(String nombre, int precioCentimos, String uriImagen, Set<CategoriaProducto> categorias) {
+    public Producto(String nombre, int precioCentimos, String uriImagen, Set<String> categorias) {
         this.nombre = nombre;
         this.precioCentimos = precioCentimos;
         this.uriImagen = uriImagen;
         this.categorias = new HashSet<>(categorias);
-    }
-
-    /**
-     * Crea un nuevo producto con la categoria OTROS
-     * @param nombre Nombre del producto
-     * @param precioCentimos Precio en centimos del producto
-     * @param uriImagen Uri de la imagen del producto
-     */
-    public Producto(String nombre, int precioCentimos, String uriImagen) {
-        this(nombre,precioCentimos,uriImagen,CategoriaProducto.OTROS);
     }
 
     /**
@@ -94,7 +84,7 @@ public class Producto implements Serializable {
      * Devuelve el conjunto de categorias que tiene el producto
      * @return conjunto de categorias que tiene el producto
      */
-    public HashSet<CategoriaProducto> getCategorias() {
+    public HashSet<String> getCategorias() {
         return new HashSet<>(categorias);
     }
 

@@ -1,15 +1,11 @@
 package paneles;
 
-import productos.CategoriaProducto;
 import productos.Producto;
 import utilidades.matematicas.Vector2;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Clase que representa un panel que incluye pestañas con productos filtrados por categorias
@@ -17,7 +13,7 @@ import java.util.TreeMap;
  */
 public class PanelProductos {
     private final JPanel panel;
-    public final TreeMap<CategoriaProducto,HashSet<Producto>> produtosPorCategoria;
+    public final HashMap<String,HashSet<Producto>> produtosPorCategoria;
     private final JTabbedPane pestanyas;
     private final PanelLateral panelLateral;
     private final int cantidadColumas = 4;
@@ -41,7 +37,7 @@ public class PanelProductos {
     public PanelProductos(HashSet<Producto> productos, PanelLateral panelLateral) {
         this.panelLateral = panelLateral;
         this.panel = new JPanel(new GridLayout(0,1));
-        this.produtosPorCategoria = new TreeMap<>();
+        this.produtosPorCategoria = new HashMap<>();
         this.pestanyas = new JTabbedPane();
         this.pestanyas.setFont(new Font(Font.SANS_SERIF,Font.PLAIN,24));
         rellenaProductosPorCategorias(productos);
@@ -55,7 +51,7 @@ public class PanelProductos {
         GridBagConstraints cTodos = new GridBagConstraints();
         cTodos.fill = GridBagConstraints.HORIZONTAL;
         //Recorre cada categoria del mapa y sus productos
-        for (Map.Entry<CategoriaProducto,HashSet<Producto>> entrada: produtosPorCategoria.entrySet()) {
+        for (Map.Entry<String,HashSet<Producto>> entrada: produtosPorCategoria.entrySet()) {
             HashSet<Producto> productosDeCategoria = entrada.getValue();
             //Creo una pestanya para la categoria actual
             JPanel panelPestanya = new JPanel(new GridLayout(5,cantidadColumas));
@@ -83,7 +79,7 @@ public class PanelProductos {
                 boton.setVisible(false);
                 panelPestanya.add(boton);
             }
-            pestanyas.addTab(entrada.getKey().getNombre(),null,panelPestanya);
+            pestanyas.addTab(entrada.getKey(),null,panelPestanya);
         }
         //Al igual que en la pestaña de las categorias relleno de botones en blanco ahora para la pestaña de todos
         for (int i=(5*cantidadColumas-todosLosProductos.size()); i>0; i--){
@@ -103,7 +99,7 @@ public class PanelProductos {
 
     private void rellenaProductosPorCategorias(HashSet<Producto> productos) {
         for (Producto producto:productos) {
-            for (CategoriaProducto categoria:producto.getCategorias()) {
+            for (String categoria:producto.getCategorias()) {
                 if(produtosPorCategoria.containsKey(categoria)){
                     HashSet<Producto> productosDeLaCategoria = produtosPorCategoria.get(categoria);
                     productosDeLaCategoria.add(producto);

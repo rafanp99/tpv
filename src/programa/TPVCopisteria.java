@@ -3,7 +3,6 @@ package programa;
 import logger.TPVLogger;
 import paneles.PanelLateral;
 import paneles.PanelProductos;
-import productos.CategoriaProducto;
 import productos.Producto;
 import productos.ProductoEnTiquet;
 import tiquets.HistoricoTiquets;
@@ -41,6 +40,7 @@ public class TPVCopisteria {
     private final PanelLateral panelLateral;
     private final JPanel panelGlobal;
     private final GridBagConstraints constraintGlobal;
+    private final Set<String> categorias;
 
     /**
      * Devuelve el panel global que compone todo el TPV
@@ -48,6 +48,38 @@ public class TPVCopisteria {
      */
     public JPanel getPanelGlobal() {
         return panelGlobal;
+    }
+
+    /**
+     * Crea un TPV completo
+     * @throws IOException excepcion si no se pueden leer los productos
+     */
+    public TPVCopisteria() throws IOException {
+        this.panelGlobal = new JPanel(new GridBagLayout());
+        this.categorias = new HashSet<>();
+        panelLateral = new PanelLateral(this);
+        try {
+            panelProductos = new PanelProductos(leeProductos(),panelLateral);
+        } catch (IOException ioe){
+            LOGGER.severe("No se ha podido leer el csv de productos");
+            throw ioe;
+        }
+        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./historico.tiquets"))){
+            historicoTiquets = (HistoricoTiquets) ois.readObject();
+        } catch (ClassNotFoundException | EOFException e) {
+            e.printStackTrace();
+            historicoTiquets = new HistoricoTiquets();
+            LOGGER.severe("Hay algun fallo en el fichero del historico de tiquets, no detecta que sea un objeto correcto");
+        } catch (FileNotFoundException notFoundException){
+            historicoTiquets = new HistoricoTiquets();
+            LOGGER.info("El fichero de historico tiquets aun no existe");
+        } catch (InvalidClassException icException){
+            icException.printStackTrace();
+            LOGGER.info("El fichero del historico de tiquets esta obsoleto, creando uno nuevo");
+            historicoTiquets = new HistoricoTiquets();
+        }
+        this.constraintGlobal = new GridBagConstraints();
+        disenyaPanelGlobal();
     }
 
     /**
@@ -232,37 +264,6 @@ public class TPVCopisteria {
         return panelLateral.getPanel();
     }
 
-    /**
-     * Crea un TPV completo
-     * @throws IOException excepcion si no se pueden leer los productos
-     */
-    public TPVCopisteria() throws IOException {
-        this.panelGlobal = new JPanel(new GridBagLayout());
-        panelLateral = new PanelLateral(this);
-        try {
-            panelProductos = new PanelProductos(leeProductos(),panelLateral);
-        } catch (IOException ioe){
-            LOGGER.severe("No se ha podido leer el csv de productos");
-            throw ioe;
-        }
-        try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream("./historico.tiquets"))){
-            historicoTiquets = (HistoricoTiquets) ois.readObject();
-        } catch (ClassNotFoundException | EOFException e) {
-            e.printStackTrace();
-            historicoTiquets = new HistoricoTiquets();
-            LOGGER.severe("Hay algun fallo en el fichero del historico de tiquets, no detecta que sea un objeto correcto");
-        } catch (FileNotFoundException notFoundException){
-            historicoTiquets = new HistoricoTiquets();
-            LOGGER.info("El fichero de historico tiquets aun no existe");
-        } catch (InvalidClassException icException){
-            icException.printStackTrace();
-            LOGGER.info("El fichero del historico de tiquets esta obsoleto, creando uno nuevo");
-            historicoTiquets = new HistoricoTiquets();
-
-        }
-        this.constraintGlobal = new GridBagConstraints();
-        disenyaPanelGlobal();
-    }
 
     private void disenyaPanelGlobal() {
         constraintGlobal.anchor=GridBagConstraints.NORTH;
@@ -312,10 +313,11 @@ public class TPVCopisteria {
             String nombre = separadoPorComas[columnaNombre];
             int precioEnCent = Integer.parseInt(separadoPorComas[columnaPrecioCent]);
             String uriImagen = separadoPorComas[columnaUriImagen];
-            Set<CategoriaProducto> categoriasProducto = new HashSet<>();
+            Set<String> categoriasProducto = new HashSet<>();
             String[] categoriasEnTexto = separadoPorComas[columnaCategorias].split(":");
             for (String categoriaEnTexto:categoriasEnTexto) {
-                categoriasProducto.add(CategoriaProducto.valueOf(categoriaEnTexto));
+                categoriasProducto.add(categoriaEnTexto);
+                categorias.add(categoriaEnTexto);
             }
             Producto producto = new Producto(nombre,precioEnCent,uriImagen,categoriasProducto);
             productos.add(producto);
