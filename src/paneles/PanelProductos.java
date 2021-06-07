@@ -55,24 +55,30 @@ public class PanelProductos {
         int posicionTodos=0;
         GridBagConstraints cTodos = new GridBagConstraints();
         cTodos.fill = GridBagConstraints.HORIZONTAL;
+        //Recorre cada categoria del mapa y sus productos
         for (Map.Entry<CategoriaProducto,HashSet<Producto>> entrada: produtosPorCategoria.entrySet()) {
             HashSet<Producto> productosDeCategoria = entrada.getValue();
+            //Creo una pestanya para la categoria actual
             JPanel panelPestanya = new JPanel(new GridLayout(5,cantidadColumas));
             int posicionActual = 0;
             for (Producto producto:productosDeCategoria) {
+                //Voy añadiendo el boton de cada producto a la pestaña de su categoria
                 BotonProducto botonProducto = new BotonProducto(producto,this);
                 panelPestanya.add(botonProducto.getBoton());
                 posicionActual++;
                 if(!todosLosProductos.contains(producto)){
+                    //Verifico que el producto no existe en la categoria de todos, si no existe lo agrego
                     todosLosProductos.add(producto);
                     BotonProducto botonProductoParaTodos = new BotonProducto(producto,this);
                     Vector2 posicionParaTodos = calculaPosicionBoton(posicionTodos);
                     posicionTodos++;
+                    //Calculo la posicion de X e Y gracias a saber cuantas columnas tiene la pestaña
                     cTodos.gridx=posicionParaTodos.getX();
                     cTodos.gridy=posicionParaTodos.getY();
                     pestanyaTodosProductos.add(botonProductoParaTodos.getBoton(),cTodos);
                 }
             }
+            //Relleno la pestaña de la categoria con botones en blanco para que asi todos ocupe en el mismo espacio y esten aliandos arriba izq
             for (int i=(5*cantidadColumas-productosDeCategoria.size()); i>0; i--){
                 JButton boton = new JButton();
                 boton.setVisible(false);
@@ -80,6 +86,7 @@ public class PanelProductos {
             }
             pestanyas.addTab(entrada.getKey().getNombre(),null,panelPestanya);
         }
+        //Al igual que en la pestaña de las categorias relleno de botones en blanco ahora para la pestaña de todos
         for (int i=(5*cantidadColumas-todosLosProductos.size()); i>0; i--){
             JButton boton = new JButton();
             boton.setVisible(false);

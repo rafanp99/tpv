@@ -65,7 +65,6 @@ public class TPVCopisteria {
      * Genera un fichero HTML en la carpeta informes, en el que informa del rendimiento del TPV basandose en el historico de tiquets
      */
     public static void generaEstadisticasTPV(){
-        //TODO REVISAR EN JAR
         carpetaInformes();
         LocalDateTime fechaActual = LocalDateTime.now();
         Tiquet tiquetMasGrande = historicoTiquets.getTiquets().get(0);
@@ -146,7 +145,6 @@ public class TPVCopisteria {
         archivoHTML += "</body>";
         //Acaba BODY;
         archivoHTML += "</html>";
-        //TODO revisar las excepciones
         File archivoACrear = new File("./informes/informe-TPV-"+
                 fechaActual.getDayOfMonth()+"-"+fechaActual.getMonthValue()+"-"+fechaActual.getYear()+
                 "_"+fechaActual.getHour()+"-"+fechaActual.getMinute()+"-"+fechaActual.getSecond()+".html");
